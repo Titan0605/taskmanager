@@ -1,0 +1,24 @@
+# .NET
+bin/
+obj/
+.vs/
+
+# Environment & Secrets (CRITICAL)
+.env
+appsettings.Development.json
+
+# User-specific files
+*.user
+*.suo
+
+# Build results
+[Dd]ebug/
+[Rr]elease/
+
+# NuGet
+*.nupkg
+packages/
+
+# IDE
+.idea/
+*.swp

@@ -1,0 +1,165 @@
+import { useState, useEffect } from 'react';
+import { projectsApi } from '../services/api';
+
+/**
+ * Projects Tab Component - Functional CRUD for projects
+ * Matches legacy "Gestión de Proyectos" view
+ */
+export default function ProjectsTab() {
+  const [projects, setProjects] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
+  const [formData, setFormData] = useState({ nombre: '', descripcion: '' });
+  const [selectedId, setSelectedId] = useState(null);
+
+  // Fetch projects on mount
+  useEffect(() => {
+    fetchProjects();
+  }, []);
+
+  const fetchProjects = async () => {
+    try {
+      setLoading(true);
+      const response = await projectsApi.getAll();
+      setProjects(response.projects || []);
+    } catch (err) {
+      setError('Error al cargar proyectos: ' + err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      if (selectedId) {
+        await projectsApi.update(selectedId, formData);
+      } else {
+        await projectsApi.create(formData);
+      }
+      clearForm();
+      fetchProjects();
+    } catch (err) {
+      setError('Error al guardar: ' + err.message);
+    }
+  };
+
+  const handleEdit = (project) => {
+    setSelectedId(project.id);
+    setFormData({ nombre: project.nombre, descripcion: project.descripcion });
+  };
+
+  const handleDelete = async () => {
+    if (!selectedId) return;
+    try {
+      await projectsApi.delete(selectedId);
+      clearForm();
+      fetchProjects();
+    } catch (err) {
+      setError('Error al eliminar: ' + err.message);
+    }
+  };
+
+  const clearForm = () => {
+    setSelectedId(null);
+    setFormData({ nombre: '', descripcion: '' });
+    setError('');
+  };
+
+  return (
+    <div className="space-y-6">
+      <h2 className="text-xl font-bold text-gray-800">Gestión de Proyectos</h2>
+
+      {/* Form Card */}
+      <div className="card">
+        <form onSubmit={handleSubmit} className="space-y-4">
+          {/* Nombre */}
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-4 items-start">
+            <label className="font-medium text-gray-700 pt-2">Nombre:</label>
+            <input
+              type="text"
+              value={formData.nombre}
+              onChange={(e) => setFormData({ ...formData, nombre: e.target.value })}
+              className="form-input md:col-span-3"
+              required
+            />
+          </div>
+
+          {/* Descripción */}
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-4 items-start">
+            <label className="font-medium text-gray-700 pt-2">Descripción:</label>
+            <textarea
+              value={formData.descripcion}
+              onChange={(e) => setFormData({ ...formData, descripcion: e.target.value })}
+              className="form-input md:col-span-3"
+              rows={3}
+            />
+          </div>
+
+          {/* Buttons */}
+          <div className="flex gap-2 pt-2">
+            <button type="submit" className="btn btn-primary">
+              {selectedId ? 'Actualizar' : 'Agregar'}
+            </button>
+            {selectedId && (
+              <>
+                <button type="button" onClick={handleDelete} className="btn btn-danger">
+                  Eliminar
+                </button>
+                <button type="button" onClick={clearForm} className="btn btn-secondary">
+                  Limpiar
+                </button>
+              </>
+            )}
+          </div>
+        </form>
+
+        {error && (
+          <div className="mt-4 p-3 bg-red-100 border border-red-300 text-red-700 rounded-lg">
+            {error}
+          </div>
+        )}
+      </div>
+
+      {/* Projects Table */}
+      <div className="card overflow-hidden p-0">
+        {loading ? (
+          <div className="p-8 text-center text-gray-500">Cargando proyectos...</div>
+        ) : (
+          <table className="data-table">
+            <thead>
+              <tr>
+                <th className="w-20">ID</th>
+                <th>Nombre</th>
+                <th>Descripción</th>
+              </tr>
+            </thead>
+            <tbody>
+              {projects.length === 0 ? (
+                <tr>
+                  <td colSpan={3} className="text-center text-gray-500 py-8">
+                    No hay proyectos registrados
+                  </td>
+                </tr>
+              ) : (
+                projects.map((project, index) => (
+                  <tr
+                    key={project.id}
+                    onClick={() => handleEdit(project)}
+                    className={`cursor-pointer ${
+                      selectedId === project.id ? 'bg-blue-50' : ''
+                    }`}
+                  >
+                    <td className="font-mono text-gray-500">{index + 1}</td>
+                    <td className="font-medium">{project.nombre}</td>
+                    <td className="text-gray-600">{project.descripcion}</td>
+                  </tr>
+                ))
+              )}
+            </tbody>
+          </table>
+        )}
+      </div>
+    </div>
+  );
+}

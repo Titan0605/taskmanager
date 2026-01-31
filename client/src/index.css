@@ -1,0 +1,99 @@
+@import "tailwindcss";
+
+/* Task Manager Enterprise - Custom Styles */
+:root {
+  --primary-color: #3b82f6;
+  --primary-dark: #2563eb;
+  --secondary-color: #64748b;
+  --accent-color: #f59e0b;
+  --success-color: #10b981;
+  --error-color: #ef4444;
+  --warning-color: #f59e0b;
+}
+
+body {
+  font-family: 'Inter', 'Segoe UI', sans-serif;
+  background-color: #f1f5f9;
+  margin: 0;
+  padding: 0;
+}
+
+/* Tab Navigation Styles */
+.tab-button {
+  @apply px-4 py-2 text-sm font-medium transition-all duration-200;
+  @apply border-b-2 border-transparent;
+  @apply hover:text-blue-600 hover:border-blue-300;
+}
+
+.tab-button.active {
+  @apply text-blue-600 border-blue-600 bg-blue-50;
+}
+
+/* Form Styles */
+.form-input {
+  @apply w-full px-3 py-2 border border-gray-300 rounded-lg;
+  @apply focus:ring-2 focus:ring-blue-500 focus:border-blue-500 focus:outline-none;
+  @apply transition-all duration-200;
+}
+
+.form-select {
+  @apply w-full px-3 py-2 border border-gray-300 rounded-lg bg-white;
+  @apply focus:ring-2 focus:ring-blue-500 focus:border-blue-500 focus:outline-none;
+}
+
+/* Button Styles */
+.btn {
+  @apply px-4 py-2 rounded-lg font-medium transition-all duration-200;
+  @apply focus:outline-none focus:ring-2 focus:ring-offset-2;
+}
+
+.btn-primary {
+  @apply bg-blue-600 text-white hover:bg-blue-700 focus:ring-blue-500;
+}
+
+.btn-secondary {
+  @apply bg-gray-200 text-gray-800 hover:bg-gray-300 focus:ring-gray-500;
+}
+
+.btn-danger {
+  @apply bg-red-600 text-white hover:bg-red-700 focus:ring-red-500;
+}
+
+.btn-success {
+  @apply bg-green-600 text-white hover:bg-green-700 focus:ring-green-500;
+}
+
+/* Card Styles */
+.card {
+  @apply bg-white rounded-xl shadow-lg p-6;
+}
+
+/* Table Styles */
+.data-table {
+  @apply w-full border-collapse;
+}
+
+.data-table th {
+  @apply bg-gray-100 px-4 py-3 text-left font-semibold text-gray-700 border-b-2 border-gray-200;
+}
+
+.data-table td {
+  @apply px-4 py-3 border-b border-gray-100;
+}
+
+.data-table tr:hover {
+  @apply bg-gray-50;
+}
+
+/* Stats Bar */
+.stats-bar {
+  @apply flex gap-4 p-4 bg-gray-100 rounded-lg text-sm;
+}
+
+.stat-item {
+  @apply flex items-center gap-1;
+}
+
+.stat-value {
+  @apply font-bold text-blue-600;
+}
