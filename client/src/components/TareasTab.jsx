@@ -282,14 +282,31 @@ export default function TareasTab() {
         )}
       </div>
 
-      {/* Statistics Bar */}
-      <div className="stats-bar">
-        <span className="font-semibold text-gray-700">Estadísticas:</span>
-        <span className="stat-item">Total: <span className="stat-value">{estadisticas.total}</span></span>
-        <span className="stat-item">| Completadas: <span className="stat-value text-green-600">{estadisticas.completadas}</span></span>
-        <span className="stat-item">| Pendientes: <span className="stat-value">{estadisticas.pendientes}</span></span>
-        <span className="stat-item">| Alta Prioridad: <span className="stat-value text-red-600">{estadisticas.altaPrioridad}</span></span>
-        <span className="stat-item">| Vencidas: <span className="stat-value text-orange-600">{estadisticas.vencidas}</span></span>
+      {/* Statistics Bar - Responsive */}
+      <div className="bg-white rounded-xl border border-gray-200 p-4 shadow-sm">
+        <h4 className="font-semibold text-gray-700 mb-3 text-sm">📊 Estadísticas</h4>
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3">
+          <div className="bg-gray-50 rounded-lg p-3 text-center">
+            <div className="text-2xl font-bold text-blue-600">{estadisticas.total}</div>
+            <div className="text-xs text-gray-500 mt-1">Total</div>
+          </div>
+          <div className="bg-green-50 rounded-lg p-3 text-center">
+            <div className="text-2xl font-bold text-green-600">{estadisticas.completadas}</div>
+            <div className="text-xs text-gray-500 mt-1">Completadas</div>
+          </div>
+          <div className="bg-yellow-50 rounded-lg p-3 text-center">
+            <div className="text-2xl font-bold text-yellow-600">{estadisticas.pendientes}</div>
+            <div className="text-xs text-gray-500 mt-1">Pendientes</div>
+          </div>
+          <div className="bg-red-50 rounded-lg p-3 text-center">
+            <div className="text-2xl font-bold text-red-600">{estadisticas.altaPrioridad}</div>
+            <div className="text-xs text-gray-500 mt-1">Alta Prioridad</div>
+          </div>
+          <div className="bg-orange-50 rounded-lg p-3 text-center col-span-2 sm:col-span-1">
+            <div className="text-2xl font-bold text-orange-600">{estadisticas.vencidas}</div>
+            <div className="text-xs text-gray-500 mt-1">Vencidas</div>
+          </div>
+        </div>
       </div>
     </div>
   );
