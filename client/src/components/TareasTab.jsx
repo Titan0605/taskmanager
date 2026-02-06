@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { tareasApi, projectsApi } from '../services/api';
+import TaskCard from './TaskCard';
 
 /**
  * Tareas Tab Component - Matches legacy "Gestión de Tareas" view
@@ -84,6 +85,18 @@ export default function TareasTab() {
     try {
       await tareasApi.delete(selectedId);
       clearForm();
+      fetchData();
+    } catch (err) {
+      setError('Error al eliminar: ' + err.message);
+    }
+  };
+
+  // Direct delete from card (without needing to select first)
+  const handleDeleteDirect = async (id) => {
+    if (!confirm('¿Estás seguro de que deseas eliminar esta tarea?')) return;
+    try {
+      await tareasApi.delete(id);
+      if (selectedId === id) clearForm();
       fetchData();
     } catch (err) {
       setError('Error al eliminar: ' + err.message);
@@ -230,70 +243,41 @@ export default function TareasTab() {
         )}
       </div>
 
-      {/* Tasks Table */}
-      <div className="card overflow-hidden p-0">
-        <h3 className="font-semibold text-gray-700 px-6 py-4 border-b bg-gray-50">
-          Lista de Tareas
-        </h3>
+      {/* Tasks Card Grid */}
+      <div className="space-y-4">
+        <div className="flex items-center justify-between">
+          <h3 className="font-semibold text-gray-700 text-lg">
+            Lista de Tareas
+          </h3>
+          <span className="text-sm text-gray-500">
+            {tareas.length} tarea{tareas.length !== 1 ? 's' : ''}
+          </span>
+        </div>
 
         {loading ? (
-          <div className="p-8 text-center text-gray-500">Cargando tareas...</div>
+          <div className="p-12 text-center text-gray-500 bg-white rounded-xl border border-gray-200">
+            <div className="animate-spin w-8 h-8 border-4 border-blue-500 border-t-transparent rounded-full mx-auto mb-4"></div>
+            Cargando tareas...
+          </div>
+        ) : tareas.length === 0 ? (
+          <div className="p-12 text-center text-gray-500 bg-white rounded-xl border border-gray-200">
+            <svg className="w-16 h-16 mx-auto mb-4 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+            </svg>
+            <p className="text-lg font-medium">No hay tareas registradas</p>
+            <p className="text-sm mt-1">Crea una nueva tarea usando el formulario de arriba</p>
+          </div>
         ) : (
-          <div className="overflow-x-auto">
-            <table className="data-table">
-              <thead>
-                <tr>
-                  <th>ID</th>
-                  <th>Título</th>
-                  <th>Estado</th>
-                  <th>Prioridad</th>
-                  <th>Proyecto</th>
-                  <th>Asignado</th>
-                  <th>Vencimiento</th>
-                </tr>
-              </thead>
-              <tbody>
-                {tareas.length === 0 ? (
-                  <tr>
-                    <td colSpan={7} className="text-center text-gray-500 py-8">
-                      No hay tareas registradas
-                    </td>
-                  </tr>
-                ) : (
-                  tareas.map((tarea, index) => (
-                    <tr
-                      key={tarea.id}
-                      onClick={() => handleEdit(tarea)}
-                      className={`cursor-pointer ${selectedId === tarea.id ? 'bg-blue-50' : ''}`}
-                    >
-                      <td className="font-mono text-gray-500">{index + 1}</td>
-                      <td className="font-medium">{tarea.titulo}</td>
-                      <td>
-                        <span className={`px-2 py-1 rounded text-xs font-medium ${
-                          tarea.estado === 'Completada' ? 'bg-green-100 text-green-700' :
-                          tarea.estado === 'En Progreso' ? 'bg-yellow-100 text-yellow-700' :
-                          'bg-gray-100 text-gray-700'
-                        }`}>
-                          {tarea.estado}
-                        </span>
-                      </td>
-                      <td>
-                        <span className={`px-2 py-1 rounded text-xs font-medium ${
-                          tarea.prioridad === 'Alta' ? 'bg-red-100 text-red-700' :
-                          tarea.prioridad === 'Media' ? 'bg-orange-100 text-orange-700' :
-                          'bg-blue-100 text-blue-700'
-                        }`}>
-                          {tarea.prioridad}
-                        </span>
-                      </td>
-                      <td>{tarea.proyectoNombre || '-'}</td>
-                      <td>{tarea.asignadoA}</td>
-                      <td>{tarea.fechaVencimiento?.split('T')[0] || '-'}</td>
-                    </tr>
-                  ))
-                )}
-              </tbody>
-            </table>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            {tareas.map((tarea) => (
+              <TaskCard
+                key={tarea.id}
+                tarea={tarea}
+                isSelected={selectedId === tarea.id}
+                onEdit={handleEdit}
+                onDelete={handleDeleteDirect}
+              />
+            ))}
           </div>
         )}
       </div>
