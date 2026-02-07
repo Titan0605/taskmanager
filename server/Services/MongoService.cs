@@ -33,4 +33,5 @@ public class MongoService
     public IMongoCollection<User> Users => _database.GetCollection<User>("users");
     public IMongoCollection<Project> Projects => _database.GetCollection<Project>("projects");
     public IMongoCollection<Tarea> Tareas => _database.GetCollection<Tarea>("tareas");
+    public IMongoCollection<Notification> Notifications => _database.GetCollection<Notification>("notifications");
 }

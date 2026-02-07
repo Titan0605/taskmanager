@@ -109,4 +109,21 @@ export const tareasApi = {
   },
 };
 
-export default { authApi, projectsApi, tareasApi };
+// ============ NOTIFICATIONS API ============
+
+export const notificationsApi = {
+  getAll: async () => {
+    return fetchApi('/notifications');
+  },
+
+  markAsRead: async (id) => {
+    return fetchApi(`/notifications/${id}/read`, { method: 'PUT' });
+  },
+
+  markAllAsRead: async () => {
+    return fetchApi('/notifications/read-all', { method: 'PUT' });
+  },
+};
+
+export default { authApi, projectsApi, tareasApi, notificationsApi };
+

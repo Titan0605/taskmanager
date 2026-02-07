@@ -46,4 +46,7 @@ public class Tarea
 
     [BsonElement("comentarios")]
     public List<Comment> Comentarios { get; set; } = new();
+
+    [BsonElement("historial")]
+    public List<string> Historial { get; set; } = new();
 }

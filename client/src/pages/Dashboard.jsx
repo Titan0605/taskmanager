@@ -2,6 +2,7 @@ import { useState } from 'react';
 import TabNavigation from '../components/TabNavigation';
 import TareasTab from '../components/TareasTab';
 import ProjectsTab from '../components/ProjectsTab';
+import NotificationBell from '../components/NotificationBell';
 
 /**
  * Dashboard Page - Main application view with responsive navigation
@@ -79,8 +80,11 @@ export default function Dashboard({ user, onLogout }) {
               </div>
             </div>
 
-            {/* Right side - User info (mobile) & Logout */}
+            {/* Right side - Notifications, User info & Logout */}
             <div className="flex items-center gap-2 md:gap-4">
+              {/* Notification Bell */}
+              <NotificationBell />
+              
               {/* Mobile user badge */}
               <span className="sm:hidden text-xs bg-gray-100 px-2 py-1 rounded-full text-gray-600">
                 {user?.username || 'admin'}

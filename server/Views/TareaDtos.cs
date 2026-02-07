@@ -37,6 +37,7 @@ public class TareaDto
     public DateTime? FechaVencimiento { get; set; }
     public double HorasEstimadas { get; set; }
     public List<CommentDto> Comentarios { get; set; } = new();
+    public List<string> Historial { get; set; } = new();
 }
 
 /// <summary>

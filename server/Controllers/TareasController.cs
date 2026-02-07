@@ -53,7 +53,8 @@ public class TareasController : ControllerBase
                     Texto = c.Texto,
                     Autor = c.Autor,
                     FechaCreacion = c.FechaCreacion
-                }).ToList()
+                }).ToList(),
+                Historial = t.Historial
             }).ToList();
 
             // Calculate statistics matching legacy app
@@ -111,7 +112,8 @@ public class TareasController : ControllerBase
                     Texto = c.Texto,
                     Autor = c.Autor,
                     FechaCreacion = c.FechaCreacion
-                }).ToList()
+                }).ToList(),
+                Historial = tarea.Historial
             });
         }
         catch (Exception ex)
@@ -164,6 +166,33 @@ public class TareasController : ControllerBase
     {
         try
         {
+            // Get current task to compare changes
+            var currentTask = await _mongoService.Tareas.Find(t => t.Id == id).FirstOrDefaultAsync();
+            if (currentTask == null)
+            {
+                return NotFound(new { Message = "Tarea no encontrada" });
+            }
+
+            // Build history entries for changes
+            var historyEntries = new List<string>();
+            var timestamp = DateTime.UtcNow.ToString("dd/MM/yyyy HH:mm");
+            var author = "Admin"; // TODO: Get from auth context
+
+            if (currentTask.Estado != dto.Estado)
+                historyEntries.Add($"Estado cambiado de '{currentTask.Estado}' a '{dto.Estado}' por {author} - {timestamp}");
+            if (currentTask.Prioridad != dto.Prioridad)
+                historyEntries.Add($"Prioridad cambiada de '{currentTask.Prioridad}' a '{dto.Prioridad}' por {author} - {timestamp}");
+            if (currentTask.AsignadoA != dto.AsignadoA)
+                historyEntries.Add($"Reasignado de '{currentTask.AsignadoA}' a '{dto.AsignadoA}' por {author} - {timestamp}");
+            if (currentTask.Titulo != dto.Titulo)
+                historyEntries.Add($"Título actualizado por {author} - {timestamp}");
+            if (currentTask.Descripcion != dto.Descripcion)
+                historyEntries.Add($"Descripción actualizada por {author} - {timestamp}");
+
+            // If no specific changes detected, add a generic update entry
+            if (historyEntries.Count == 0)
+                historyEntries.Add($"Tarea actualizada por {author} - {timestamp}");
+
             var update = Builders<Tarea>.Update
                 .Set(t => t.Titulo, dto.Titulo)
                 .Set(t => t.Descripcion, dto.Descripcion)
@@ -173,16 +202,13 @@ public class TareasController : ControllerBase
                 .Set(t => t.AsignadoA, dto.AsignadoA)
                 .Set(t => t.FechaVencimiento, dto.FechaVencimiento)
                 .Set(t => t.HorasEstimadas, dto.HorasEstimadas)
-                .Set(t => t.UpdatedAt, DateTime.UtcNow);
+                .Set(t => t.UpdatedAt, DateTime.UtcNow)
+                .PushEach(t => t.Historial, historyEntries);
 
-            var result = await _mongoService.Tareas.UpdateOneAsync(t => t.Id == id, update);
-
-            if (result.MatchedCount == 0)
-            {
-                return NotFound(new { Message = "Tarea no encontrada" });
-            }
+            await _mongoService.Tareas.UpdateOneAsync(t => t.Id == id, update);
 
             dto.Id = id;
+            dto.Historial = currentTask.Historial.Concat(historyEntries).ToList();
             return Ok(dto);
         }
         catch (Exception ex)
