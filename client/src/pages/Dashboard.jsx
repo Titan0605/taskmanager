@@ -3,6 +3,7 @@ import TabNavigation from '../components/TabNavigation';
 import TareasTab from '../components/TareasTab';
 import ProjectsTab from '../components/ProjectsTab';
 import NotificationBell from '../components/NotificationBell';
+import DashboardStats from '../components/DashboardStats';
 
 /**
  * Dashboard Page - Main application view with responsive navigation
@@ -184,7 +185,11 @@ export default function Dashboard({ user, onLogout }) {
 
 
       {/* Main Content */}
-      <main className="max-w-7xl mx-auto px-3 md:px-4 py-4 md:py-6">
+      <main className="max-w-7xl mx-auto px-3 md:px-4 py-4 md:py-6 space-y-6">
+        {/* Dashboard Stats - Always visible at top */}
+        <DashboardStats />
+        
+        {/* Tab Content */}
         {renderTabContent()}
       </main>
     </div>
