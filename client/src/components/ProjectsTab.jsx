@@ -68,14 +68,14 @@ export default function ProjectsTab() {
 
   return (
     <div className="space-y-6">
-      <h2 className="text-xl font-bold text-gray-800">Gestión de Proyectos</h2>
+      <h2 className="text-xl font-bold text-gray-800 dark:text-white">Gestión de Proyectos</h2>
 
       {/* Form Card */}
       <div className="card">
         <form onSubmit={handleSubmit} className="space-y-4">
           {/* Nombre */}
           <div className="grid grid-cols-1 md:grid-cols-4 gap-4 items-start">
-            <label className="font-medium text-gray-700 pt-2">Nombre:</label>
+            <label className="font-medium text-gray-700 dark:text-gray-300 pt-2">Nombre:</label>
             <input
               type="text"
               value={formData.nombre}
@@ -87,7 +87,7 @@ export default function ProjectsTab() {
 
           {/* Descripción */}
           <div className="grid grid-cols-1 md:grid-cols-4 gap-4 items-start">
-            <label className="font-medium text-gray-700 pt-2">Descripción:</label>
+            <label className="font-medium text-gray-700 dark:text-gray-300 pt-2">Descripción:</label>
             <textarea
               value={formData.descripcion}
               onChange={(e) => setFormData({ ...formData, descripcion: e.target.value })}
@@ -115,7 +115,7 @@ export default function ProjectsTab() {
         </form>
 
         {error && (
-          <div className="mt-4 p-3 bg-red-100 border border-red-300 text-red-700 rounded-lg">
+          <div className="mt-4 p-3 bg-red-100 dark:bg-red-900/30 border border-red-300 dark:border-red-700 text-red-700 dark:text-red-400 rounded-lg">
             {error}
           </div>
         )}
@@ -124,7 +124,7 @@ export default function ProjectsTab() {
       {/* Projects Table */}
       <div className="card overflow-hidden p-0">
         {loading ? (
-          <div className="p-8 text-center text-gray-500">Cargando proyectos...</div>
+          <div className="p-8 text-center text-gray-500 dark:text-gray-400">Cargando proyectos...</div>
         ) : (
           <table className="data-table">
             <thead>
@@ -137,7 +137,7 @@ export default function ProjectsTab() {
             <tbody>
               {projects.length === 0 ? (
                 <tr>
-                  <td colSpan={3} className="text-center text-gray-500 py-8">
+                  <td colSpan={3} className="text-center text-gray-500 dark:text-gray-400 py-8">
                     No hay proyectos registrados
                   </td>
                 </tr>
@@ -147,12 +147,12 @@ export default function ProjectsTab() {
                     key={project.id}
                     onClick={() => handleEdit(project)}
                     className={`cursor-pointer ${
-                      selectedId === project.id ? 'bg-blue-50' : ''
+                      selectedId === project.id ? 'bg-blue-50 dark:bg-blue-900/30' : ''
                     }`}
                   >
-                    <td className="font-mono text-gray-500">{index + 1}</td>
-                    <td className="font-medium">{project.nombre}</td>
-                    <td className="text-gray-600">{project.descripcion}</td>
+                    <td className="font-mono text-gray-500 dark:text-gray-400">{index + 1}</td>
+                    <td className="font-medium dark:text-white">{project.nombre}</td>
+                    <td className="text-gray-600 dark:text-gray-400">{project.descripcion}</td>
                   </tr>
                 ))
               )}

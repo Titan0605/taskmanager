@@ -7,11 +7,11 @@ export default function TaskCard({ tarea, isSelected, onEdit, onDelete, onViewDe
   const getStatusStyles = (estado) => {
     switch (estado) {
       case 'Completada':
-        return 'bg-green-100 text-green-700 border-green-200';
+        return 'bg-green-100 dark:bg-green-900/40 text-green-700 dark:text-green-400 border-green-200 dark:border-green-700';
       case 'En Progreso':
-        return 'bg-yellow-100 text-yellow-700 border-yellow-200';
+        return 'bg-yellow-100 dark:bg-yellow-900/40 text-yellow-700 dark:text-yellow-400 border-yellow-200 dark:border-yellow-700';
       default:
-        return 'bg-gray-100 text-gray-700 border-gray-200';
+        return 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 border-gray-200 dark:border-gray-600';
     }
   };
 
@@ -19,11 +19,11 @@ export default function TaskCard({ tarea, isSelected, onEdit, onDelete, onViewDe
   const getPriorityStyles = (prioridad) => {
     switch (prioridad) {
       case 'Alta':
-        return 'bg-red-100 text-red-700 border-red-300';
+        return 'bg-red-100 dark:bg-red-900/40 text-red-700 dark:text-red-400 border-red-300 dark:border-red-700';
       case 'Media':
-        return 'bg-orange-100 text-orange-700 border-orange-200';
+        return 'bg-orange-100 dark:bg-orange-900/40 text-orange-700 dark:text-orange-400 border-orange-200 dark:border-orange-700';
       default:
-        return 'bg-blue-100 text-blue-700 border-blue-200';
+        return 'bg-blue-100 dark:bg-blue-900/40 text-blue-700 dark:text-blue-400 border-blue-200 dark:border-blue-700';
     }
   };
 
@@ -36,10 +36,10 @@ export default function TaskCard({ tarea, isSelected, onEdit, onDelete, onViewDe
     <div
       onClick={() => onViewDetails && onViewDetails(tarea)}
       className={`
-        group relative bg-white rounded-xl border-2 p-5 cursor-pointer
+        group relative bg-white dark:bg-slate-800 rounded-xl border-2 p-5 cursor-pointer
         shadow-sm hover:shadow-lg transition-all duration-300
-        hover:border-blue-300 hover:-translate-y-1
-        ${isSelected ? 'border-blue-500 ring-2 ring-blue-200' : 'border-gray-200'}
+        hover:border-blue-300 dark:hover:border-blue-600 hover:-translate-y-1
+        ${isSelected ? 'border-blue-500 ring-2 ring-blue-200 dark:ring-blue-700' : 'border-gray-200 dark:border-slate-700'}
         ${isOverdue ? 'border-l-4 border-l-red-500' : ''}
       `}
     >
@@ -51,13 +51,13 @@ export default function TaskCard({ tarea, isSelected, onEdit, onDelete, onViewDe
       </div>
 
       {/* Title */}
-      <h4 className="text-lg font-semibold text-gray-800 pr-20 mb-2 line-clamp-1">
+      <h4 className="text-lg font-semibold text-gray-800 dark:text-white pr-20 mb-2 line-clamp-1">
         {tarea.titulo}
       </h4>
 
       {/* Description */}
       {tarea.descripcion && (
-        <p className="text-gray-600 text-sm mb-3 line-clamp-2">
+        <p className="text-gray-600 dark:text-gray-400 text-sm mb-3 line-clamp-2">
           {tarea.descripcion}
         </p>
       )}
@@ -74,7 +74,7 @@ export default function TaskCard({ tarea, isSelected, onEdit, onDelete, onViewDe
       </div>
 
       {/* Meta Information */}
-      <div className="space-y-2 text-sm text-gray-500">
+      <div className="space-y-2 text-sm text-gray-500 dark:text-gray-400">
         {/* Project */}
         {tarea.proyectoNombre && (
           <div className="flex items-center gap-2">
@@ -95,7 +95,7 @@ export default function TaskCard({ tarea, isSelected, onEdit, onDelete, onViewDe
 
         {/* Due Date */}
         {tarea.fechaVencimiento && (
-          <div className={`flex items-center gap-2 ${isOverdue ? 'text-red-600 font-medium' : ''}`}>
+          <div className={`flex items-center gap-2 ${isOverdue ? 'text-red-600 dark:text-red-400 font-medium' : ''}`}>
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
             </svg>
@@ -116,7 +116,7 @@ export default function TaskCard({ tarea, isSelected, onEdit, onDelete, onViewDe
 
         {/* Comments count */}
         {tarea.comentarios?.length > 0 && (
-          <div className="flex items-center gap-2 text-blue-600">
+          <div className="flex items-center gap-2 text-blue-600 dark:text-blue-400">
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
             </svg>
@@ -129,7 +129,7 @@ export default function TaskCard({ tarea, isSelected, onEdit, onDelete, onViewDe
       <div className="absolute bottom-3 right-3 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
         <button
           onClick={(e) => { e.stopPropagation(); onEdit(tarea); }}
-          className="p-2 bg-blue-50 hover:bg-blue-100 text-blue-600 rounded-lg transition-colors"
+          className="p-2 bg-blue-50 dark:bg-blue-900/50 hover:bg-blue-100 dark:hover:bg-blue-800 text-blue-600 dark:text-blue-400 rounded-lg transition-colors"
           title="Editar"
         >
           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -138,7 +138,7 @@ export default function TaskCard({ tarea, isSelected, onEdit, onDelete, onViewDe
         </button>
         <button
           onClick={(e) => { e.stopPropagation(); onDelete(tarea.id); }}
-          className="p-2 bg-red-50 hover:bg-red-100 text-red-600 rounded-lg transition-colors"
+          className="p-2 bg-red-50 dark:bg-red-900/50 hover:bg-red-100 dark:hover:bg-red-800 text-red-600 dark:text-red-400 rounded-lg transition-colors"
           title="Eliminar"
         >
           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">

@@ -1,5 +1,8 @@
 @import "tailwindcss";
 
+/* Enable class-based dark mode */
+@custom-variant dark (&:where(.dark, .dark *));
+
 /* Task Manager Enterprise - Custom Styles */
 :root {
   --primary-color: #3b82f6;
@@ -11,11 +14,20 @@
   --warning-color: #f59e0b;
 }
 
+/* Light mode body */
 body {
   font-family: 'Inter', 'Segoe UI', sans-serif;
   background-color: #f1f5f9;
   margin: 0;
   padding: 0;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Dark mode body */
+.dark body,
+body:where(.dark *) {
+  background-color: #0f172a;
+  color: #e2e8f0;
 }
 
 /* Tab Navigation Styles */
@@ -25,8 +37,16 @@ body {
   @apply hover:text-blue-600 hover:border-blue-300;
 }
 
+.dark .tab-button {
+  @apply hover:text-blue-400 hover:border-blue-500;
+}
+
 .tab-button.active {
   @apply text-blue-600 border-blue-600 bg-blue-50;
+}
+
+.dark .tab-button.active {
+  @apply text-blue-400 border-blue-400 bg-blue-900/30;
 }
 
 /* Form Styles */
@@ -36,9 +56,18 @@ body {
   @apply transition-all duration-200;
 }
 
+.dark .form-input {
+  @apply bg-slate-800 border-slate-600 text-white;
+  @apply focus:ring-blue-400 focus:border-blue-400;
+}
+
 .form-select {
   @apply w-full px-3 py-2 border border-gray-300 rounded-lg bg-white;
   @apply focus:ring-2 focus:ring-blue-500 focus:border-blue-500 focus:outline-none;
+}
+
+.dark .form-select {
+  @apply bg-slate-800 border-slate-600 text-white;
 }
 
 /* Button Styles */
@@ -47,12 +76,20 @@ body {
   @apply focus:outline-none focus:ring-2 focus:ring-offset-2;
 }
 
+.dark .btn {
+  @apply focus:ring-offset-slate-900;
+}
+
 .btn-primary {
   @apply bg-blue-600 text-white hover:bg-blue-700 focus:ring-blue-500;
 }
 
 .btn-secondary {
   @apply bg-gray-200 text-gray-800 hover:bg-gray-300 focus:ring-gray-500;
+}
+
+.dark .btn-secondary {
+  @apply bg-slate-700 text-gray-200 hover:bg-slate-600;
 }
 
 .btn-danger {
@@ -66,6 +103,11 @@ body {
 /* Card Styles */
 .card {
   @apply bg-white rounded-xl shadow-lg p-6;
+  @apply transition-all duration-300;
+}
+
+.dark .card {
+  @apply bg-slate-800 shadow-slate-900/50;
 }
 
 /* Table Styles */
@@ -77,17 +119,33 @@ body {
   @apply bg-gray-100 px-4 py-3 text-left font-semibold text-gray-700 border-b-2 border-gray-200;
 }
 
+.dark .data-table th {
+  @apply bg-slate-700 text-gray-200 border-slate-600;
+}
+
 .data-table td {
   @apply px-4 py-3 border-b border-gray-100;
+}
+
+.dark .data-table td {
+  @apply border-slate-700 text-gray-300;
 }
 
 .data-table tr:hover {
   @apply bg-gray-50;
 }
 
+.dark .data-table tr:hover {
+  @apply bg-slate-700/50;
+}
+
 /* Stats Bar */
 .stats-bar {
   @apply flex gap-4 p-4 bg-gray-100 rounded-lg text-sm;
+}
+
+.dark .stats-bar {
+  @apply bg-slate-800;
 }
 
 .stat-item {
@@ -97,3 +155,8 @@ body {
 .stat-value {
   @apply font-bold text-blue-600;
 }
+
+.dark .stat-value {
+  @apply text-blue-400;
+}
+

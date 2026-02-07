@@ -2,6 +2,7 @@ import { useState } from 'react'
 import './index.css'
 import Login from './pages/Login'
 import Dashboard from './pages/Dashboard'
+import { ThemeProvider } from './context/ThemeContext'
 
 /**
  * Main App Component
@@ -25,11 +26,16 @@ function App() {
   }
 
   // Render Login or Dashboard based on auth state
-  if (!isLoggedIn) {
-    return <Login onLogin={handleLogin} />
-  }
-
-  return <Dashboard user={user} onLogout={handleLogout} />
+  return (
+    <ThemeProvider>
+      {!isLoggedIn ? (
+        <Login onLogin={handleLogin} />
+      ) : (
+        <Dashboard user={user} onLogout={handleLogout} />
+      )}
+    </ThemeProvider>
+  )
 }
 
 export default App
+

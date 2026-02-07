@@ -30,26 +30,26 @@ export default function Login({ onLogin }) {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-100 to-slate-200 flex items-center justify-center p-4">
+    <div className="min-h-screen bg-gradient-to-br from-slate-100 to-slate-200 dark:from-slate-900 dark:to-slate-800 flex items-center justify-center p-4 transition-colors duration-300">
       <div className="w-full max-w-md">
         {/* Header */}
         <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold text-gray-800 mb-2">
+          <h1 className="text-3xl font-bold text-gray-800 dark:text-white mb-2">
             Task Manager
           </h1>
-          <p className="text-gray-600">Enterprise Edition</p>
+          <p className="text-gray-600 dark:text-gray-400">Enterprise Edition</p>
         </div>
 
         {/* Login Card */}
-        <div className="bg-white rounded-2xl shadow-xl p-8">
-          <h2 className="text-xl font-semibold text-gray-800 mb-6 pb-2 border-b border-gray-200">
+        <div className="bg-white dark:bg-slate-800 rounded-2xl shadow-xl p-8 transition-colors duration-300">
+          <h2 className="text-xl font-semibold text-gray-800 dark:text-white mb-6 pb-2 border-b border-gray-200 dark:border-slate-600">
             Login
           </h2>
 
           <form onSubmit={handleSubmit} className="space-y-4">
             {/* Username */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                 Usuario:
               </label>
               <input
@@ -64,7 +64,7 @@ export default function Login({ onLogin }) {
 
             {/* Password */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                 Contraseña:
               </label>
               <input
@@ -79,7 +79,7 @@ export default function Login({ onLogin }) {
 
             {/* Error Message */}
             {error && (
-              <div className="p-3 bg-red-100 border border-red-300 text-red-700 rounded-lg text-sm">
+              <div className="p-3 bg-red-100 dark:bg-red-900/30 border border-red-300 dark:border-red-700 text-red-700 dark:text-red-400 rounded-lg text-sm">
                 {error}
               </div>
             )}
@@ -95,13 +95,13 @@ export default function Login({ onLogin }) {
           </form>
 
           {/* Demo Credentials Hint */}
-          <div className="mt-6 p-3 bg-blue-50 rounded-lg text-sm text-blue-700">
+          <div className="mt-6 p-3 bg-blue-50 dark:bg-blue-900/30 rounded-lg text-sm text-blue-700 dark:text-blue-400">
             <strong>Demo:</strong> Usuario: admin / Contraseña: admin
           </div>
         </div>
 
         {/* Footer */}
-        <p className="text-center text-gray-500 text-sm mt-6">
+        <p className="text-center text-gray-500 dark:text-gray-400 text-sm mt-6">
           © 2026 Task Manager Enterprise
         </p>
       </div>

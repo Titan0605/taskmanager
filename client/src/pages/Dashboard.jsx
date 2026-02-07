@@ -4,6 +4,7 @@ import TareasTab from '../components/TareasTab';
 import ProjectsTab from '../components/ProjectsTab';
 import NotificationBell from '../components/NotificationBell';
 import DashboardStats from '../components/DashboardStats';
+import DarkModeToggle from '../components/DarkModeToggle';
 
 /**
  * Dashboard Page - Main application view with responsive navigation
@@ -45,9 +46,9 @@ export default function Dashboard({ user, onLogout }) {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-100 to-slate-200">
+    <div className="min-h-screen bg-gradient-to-br from-slate-100 to-slate-200 dark:from-slate-900 dark:to-slate-800 transition-colors duration-300">
       {/* Header */}
-      <header className="bg-white shadow-sm border-b border-gray-200 sticky top-0 z-50">
+      <header className="bg-white dark:bg-slate-800 shadow-sm border-b border-gray-200 dark:border-slate-700 sticky top-0 z-50 transition-colors duration-300">
         <div className="max-w-7xl mx-auto px-4 py-3 md:py-4">
           <div className="flex justify-between items-center">
             {/* Left side - Logo & User (Desktop) / Hamburger (Mobile) */}
@@ -74,20 +75,23 @@ export default function Dashboard({ user, onLogout }) {
 
               {/* Logo & Title */}
               <div>
-                <h1 className="text-xl md:text-2xl font-bold text-gray-800">Task Manager</h1>
-                <p className="text-xs md:text-sm text-gray-600 hidden sm:block">
+                <h1 className="text-xl md:text-2xl font-bold text-gray-800 dark:text-white">Task Manager</h1>
+                <p className="text-xs md:text-sm text-gray-600 dark:text-gray-400 hidden sm:block">
                   Usuario: <span className="font-medium">{user?.username || 'admin'}</span>
                 </p>
               </div>
             </div>
 
-            {/* Right side - Notifications, User info & Logout */}
-            <div className="flex items-center gap-2 md:gap-4">
+            {/* Right side - Theme, Notifications, User info & Logout */}
+            <div className="flex items-center gap-2 md:gap-3">
+              {/* Dark Mode Toggle */}
+              <DarkModeToggle />
+              
               {/* Notification Bell */}
               <NotificationBell />
               
               {/* Mobile user badge */}
-              <span className="sm:hidden text-xs bg-gray-100 px-2 py-1 rounded-full text-gray-600">
+              <span className="sm:hidden text-xs bg-gray-100 dark:bg-slate-700 px-2 py-1 rounded-full text-gray-600 dark:text-gray-300">
                 {user?.username || 'admin'}
               </span>
               <button
@@ -114,21 +118,21 @@ export default function Dashboard({ user, onLogout }) {
 
       {/* Mobile Sidebar Drawer */}
       <aside className={`
-        fixed top-0 left-0 h-full w-72 bg-white z-50 shadow-xl
+        fixed top-0 left-0 h-full w-72 bg-white dark:bg-slate-800 z-50 shadow-xl
         transform transition-transform duration-300 ease-in-out md:hidden
         ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full'}
       `}>
         {/* Sidebar Header */}
-        <div className="p-4 border-b border-gray-200 flex items-center justify-between">
+        <div className="p-4 border-b border-gray-200 dark:border-slate-700 flex items-center justify-between">
           <div>
-            <h2 className="font-bold text-gray-800">Task Manager</h2>
-            <p className="text-xs text-gray-500">Enterprise Edition</p>
+            <h2 className="font-bold text-gray-800 dark:text-white">Task Manager</h2>
+            <p className="text-xs text-gray-500 dark:text-gray-400">Enterprise Edition</p>
           </div>
           <button
             onClick={() => setIsSidebarOpen(false)}
-            className="p-2 rounded-lg hover:bg-gray-100"
+            className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-slate-700"
           >
-            <svg className="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg className="w-5 h-5 text-gray-500 dark:text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
             </svg>
           </button>
@@ -147,8 +151,8 @@ export default function Dashboard({ user, onLogout }) {
                 w-full flex items-center gap-3 px-4 py-3 text-left
                 transition-colors duration-150
                 ${activeTab === tab.id 
-                  ? 'bg-blue-50 text-blue-600 border-r-4 border-blue-600 font-medium' 
-                  : 'text-gray-600 hover:bg-gray-50'
+                  ? 'bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 border-r-4 border-blue-600 font-medium' 
+                  : 'text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-slate-700'
                 }
               `}
             >
@@ -159,21 +163,21 @@ export default function Dashboard({ user, onLogout }) {
         </nav>
 
         {/* Sidebar Footer */}
-        <div className="absolute bottom-0 left-0 right-0 p-4 border-t border-gray-200 bg-gray-50">
+        <div className="absolute bottom-0 left-0 right-0 p-4 border-t border-gray-200 dark:border-slate-700 bg-gray-50 dark:bg-slate-900">
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 bg-blue-500 rounded-full flex items-center justify-center text-white font-bold">
               {(user?.username || 'A')[0].toUpperCase()}
             </div>
             <div className="flex-1">
-              <p className="font-medium text-gray-800 text-sm">{user?.username || 'admin'}</p>
-              <p className="text-xs text-gray-500">Administrador</p>
+              <p className="font-medium text-gray-800 dark:text-white text-sm">{user?.username || 'admin'}</p>
+              <p className="text-xs text-gray-500 dark:text-gray-400">Administrador</p>
             </div>
           </div>
         </div>
       </aside>
 
       {/* Desktop Tab Navigation */}
-      <div className="bg-white border-b border-gray-200 shadow-sm hidden md:block">
+      <div className="bg-white dark:bg-slate-800 border-b border-gray-200 dark:border-slate-700 shadow-sm hidden md:block">
         <div className="max-w-7xl mx-auto px-4">
           <TabNavigation
             tabs={tabs}

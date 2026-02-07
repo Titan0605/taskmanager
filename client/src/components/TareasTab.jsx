@@ -138,7 +138,7 @@ export default function TareasTab() {
     <div className="space-y-6">
       {/* Header with Export Button */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
-        <h2 className="text-xl font-bold text-gray-800">Gestión de Tareas</h2>
+        <h2 className="text-xl font-bold text-gray-800 dark:text-white">Gestión de Tareas</h2>
         <button
           onClick={() => exportTareasToCSV(tareas)}
           disabled={tareas.length === 0}
@@ -153,14 +153,14 @@ export default function TareasTab() {
 
       {/* Form Card */}
       <div className="card">
-        <h3 className="font-semibold text-gray-700 mb-4 pb-2 border-b">
+        <h3 className="font-semibold text-gray-700 dark:text-gray-200 mb-4 pb-2 border-b dark:border-slate-600">
           {selectedId ? 'Editar Tarea' : 'Nueva Tarea'}
         </h3>
 
         <form onSubmit={handleSubmit} className="space-y-3">
           {/* Título */}
           <div className="grid grid-cols-1 md:grid-cols-6 gap-2 items-center">
-            <label className="font-medium text-gray-700">Título:</label>
+            <label className="font-medium text-gray-700 dark:text-gray-300">Título:</label>
             <input
               type="text"
               value={formData.titulo}
@@ -172,7 +172,7 @@ export default function TareasTab() {
 
           {/* Descripción */}
           <div className="grid grid-cols-1 md:grid-cols-6 gap-2 items-start">
-            <label className="font-medium text-gray-700 pt-2">Descripción:</label>
+            <label className="font-medium text-gray-700 dark:text-gray-300 pt-2">Descripción:</label>
             <textarea
               value={formData.descripcion}
               onChange={(e) => setFormData({ ...formData, descripcion: e.target.value })}
@@ -183,7 +183,7 @@ export default function TareasTab() {
 
           {/* Estado & Prioridad */}
           <div className="grid grid-cols-1 md:grid-cols-6 gap-2 items-center">
-            <label className="font-medium text-gray-700">Estado:</label>
+            <label className="font-medium text-gray-700 dark:text-gray-300">Estado:</label>
             <select
               value={formData.estado}
               onChange={(e) => setFormData({ ...formData, estado: e.target.value })}
@@ -193,7 +193,7 @@ export default function TareasTab() {
               <option value="En Progreso">En Progreso</option>
               <option value="Completada">Completada</option>
             </select>
-            <label className="font-medium text-gray-700">Prioridad:</label>
+            <label className="font-medium text-gray-700 dark:text-gray-300">Prioridad:</label>
             <select
               value={formData.prioridad}
               onChange={(e) => setFormData({ ...formData, prioridad: e.target.value })}
@@ -207,7 +207,7 @@ export default function TareasTab() {
 
           {/* Proyecto & Asignado */}
           <div className="grid grid-cols-1 md:grid-cols-6 gap-2 items-center">
-            <label className="font-medium text-gray-700">Proyecto:</label>
+            <label className="font-medium text-gray-700 dark:text-gray-300">Proyecto:</label>
             <select
               value={formData.proyectoId}
               onChange={(e) => setFormData({ ...formData, proyectoId: e.target.value })}
@@ -218,7 +218,7 @@ export default function TareasTab() {
                 <option key={p.id} value={p.id}>{p.nombre}</option>
               ))}
             </select>
-            <label className="font-medium text-gray-700">Asignado a:</label>
+            <label className="font-medium text-gray-700 dark:text-gray-300">Asignado a:</label>
             <input
               type="text"
               value={formData.asignadoA}
@@ -229,14 +229,14 @@ export default function TareasTab() {
 
           {/* Fecha & Horas */}
           <div className="grid grid-cols-1 md:grid-cols-6 gap-2 items-center">
-            <label className="font-medium text-gray-700">Vencimiento:</label>
+            <label className="font-medium text-gray-700 dark:text-gray-300">Vencimiento:</label>
             <input
               type="date"
               value={formData.fechaVencimiento}
               onChange={(e) => setFormData({ ...formData, fechaVencimiento: e.target.value })}
               className="form-input md:col-span-2"
             />
-            <label className="font-medium text-gray-700">Horas Est.:</label>
+            <label className="font-medium text-gray-700 dark:text-gray-300">Horas Est.:</label>
             <input
               type="number"
               value={formData.horasEstimadas}
@@ -273,10 +273,10 @@ export default function TareasTab() {
       </div>
 
       {/* Search Bar */}
-      <div className="bg-white rounded-xl border border-gray-200 p-4 shadow-sm">
+      <div className="bg-white dark:bg-slate-800 rounded-xl border border-gray-200 dark:border-slate-700 p-4 shadow-sm">
         <div className="relative">
           <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-            <svg className="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg className="w-5 h-5 text-gray-400 dark:text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
             </svg>
           </div>
@@ -285,12 +285,12 @@ export default function TareasTab() {
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             placeholder="Buscar tareas por título, descripción, asignado o proyecto..."
-            className="w-full pl-10 pr-10 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 focus:outline-none transition-all text-sm"
+            className="w-full pl-10 pr-10 py-3 border border-gray-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-400 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 focus:outline-none transition-all text-sm"
           />
           {searchQuery && (
             <button
               onClick={() => setSearchQuery('')}
-              className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-gray-600"
+              className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300"
             >
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -299,7 +299,7 @@ export default function TareasTab() {
           )}
         </div>
         {searchQuery && (
-          <div className="mt-2 text-sm text-gray-500">
+          <div className="mt-2 text-sm text-gray-500 dark:text-gray-400">
             {filteredTareas.length} resultado{filteredTareas.length !== 1 ? 's' : ''} para "{searchQuery}"
           </div>
         )}
@@ -308,37 +308,37 @@ export default function TareasTab() {
       {/* Tasks Card Grid */}
       <div className="space-y-4">
         <div className="flex items-center justify-between">
-          <h3 className="font-semibold text-gray-700 text-lg">
+          <h3 className="font-semibold text-gray-700 dark:text-gray-200 text-lg">
             Lista de Tareas
           </h3>
-          <span className="text-sm text-gray-500">
+          <span className="text-sm text-gray-500 dark:text-gray-400">
             {filteredTareas.length} tarea{filteredTareas.length !== 1 ? 's' : ''}
           </span>
         </div>
 
         {loading ? (
-          <div className="p-12 text-center text-gray-500 bg-white rounded-xl border border-gray-200">
+          <div className="p-12 text-center text-gray-500 dark:text-gray-400 bg-white dark:bg-slate-800 rounded-xl border border-gray-200 dark:border-slate-700">
             <div className="animate-spin w-8 h-8 border-4 border-blue-500 border-t-transparent rounded-full mx-auto mb-4"></div>
             Cargando tareas...
           </div>
         ) : tareas.length === 0 ? (
-          <div className="p-12 text-center text-gray-500 bg-white rounded-xl border border-gray-200">
-            <svg className="w-16 h-16 mx-auto mb-4 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <div className="p-12 text-center text-gray-500 dark:text-gray-400 bg-white dark:bg-slate-800 rounded-xl border border-gray-200 dark:border-slate-700">
+            <svg className="w-16 h-16 mx-auto mb-4 text-gray-300 dark:text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
             </svg>
-            <p className="text-lg font-medium">No hay tareas registradas</p>
+            <p className="text-lg font-medium dark:text-gray-300">No hay tareas registradas</p>
             <p className="text-sm mt-1">Crea una nueva tarea usando el formulario de arriba</p>
           </div>
         ) : filteredTareas.length === 0 ? (
-          <div className="p-12 text-center text-gray-500 bg-white rounded-xl border border-gray-200">
-            <svg className="w-16 h-16 mx-auto mb-4 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <div className="p-12 text-center text-gray-500 dark:text-gray-400 bg-white dark:bg-slate-800 rounded-xl border border-gray-200 dark:border-slate-700">
+            <svg className="w-16 h-16 mx-auto mb-4 text-gray-300 dark:text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
             </svg>
-            <p className="text-lg font-medium">No se encontraron resultados</p>
+            <p className="text-lg font-medium dark:text-gray-300">No se encontraron resultados</p>
             <p className="text-sm mt-1">Intenta con otros términos de búsqueda</p>
             <button
               onClick={() => setSearchQuery('')}
-              className="mt-3 text-blue-600 hover:text-blue-700 text-sm font-medium"
+              className="mt-3 text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 text-sm font-medium"
             >
               Limpiar búsqueda
             </button>
@@ -360,28 +360,28 @@ export default function TareasTab() {
       </div>
 
       {/* Statistics Bar - Responsive */}
-      <div className="bg-white rounded-xl border border-gray-200 p-4 shadow-sm">
-        <h4 className="font-semibold text-gray-700 mb-3 text-sm">📊 Estadísticas</h4>
+      <div className="bg-white dark:bg-slate-800 rounded-xl border border-gray-200 dark:border-slate-700 p-4 shadow-sm">
+        <h4 className="font-semibold text-gray-700 dark:text-gray-200 mb-3 text-sm">📊 Estadísticas</h4>
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3">
-          <div className="bg-gray-50 rounded-lg p-3 text-center">
-            <div className="text-2xl font-bold text-blue-600">{estadisticas.total}</div>
-            <div className="text-xs text-gray-500 mt-1">Total</div>
+          <div className="bg-gray-50 dark:bg-slate-700 rounded-lg p-3 text-center">
+            <div className="text-2xl font-bold text-blue-600 dark:text-blue-400">{estadisticas.total}</div>
+            <div className="text-xs text-gray-500 dark:text-gray-400 mt-1">Total</div>
           </div>
-          <div className="bg-green-50 rounded-lg p-3 text-center">
-            <div className="text-2xl font-bold text-green-600">{estadisticas.completadas}</div>
-            <div className="text-xs text-gray-500 mt-1">Completadas</div>
+          <div className="bg-green-50 dark:bg-green-900/30 rounded-lg p-3 text-center">
+            <div className="text-2xl font-bold text-green-600 dark:text-green-400">{estadisticas.completadas}</div>
+            <div className="text-xs text-gray-500 dark:text-gray-400 mt-1">Completadas</div>
           </div>
-          <div className="bg-yellow-50 rounded-lg p-3 text-center">
-            <div className="text-2xl font-bold text-yellow-600">{estadisticas.pendientes}</div>
-            <div className="text-xs text-gray-500 mt-1">Pendientes</div>
+          <div className="bg-yellow-50 dark:bg-yellow-900/30 rounded-lg p-3 text-center">
+            <div className="text-2xl font-bold text-yellow-600 dark:text-yellow-400">{estadisticas.pendientes}</div>
+            <div className="text-xs text-gray-500 dark:text-gray-400 mt-1">Pendientes</div>
           </div>
-          <div className="bg-red-50 rounded-lg p-3 text-center">
-            <div className="text-2xl font-bold text-red-600">{estadisticas.altaPrioridad}</div>
-            <div className="text-xs text-gray-500 mt-1">Alta Prioridad</div>
+          <div className="bg-red-50 dark:bg-red-900/30 rounded-lg p-3 text-center">
+            <div className="text-2xl font-bold text-red-600 dark:text-red-400">{estadisticas.altaPrioridad}</div>
+            <div className="text-xs text-gray-500 dark:text-gray-400 mt-1">Alta Prioridad</div>
           </div>
-          <div className="bg-orange-50 rounded-lg p-3 text-center col-span-2 sm:col-span-1">
-            <div className="text-2xl font-bold text-orange-600">{estadisticas.vencidas}</div>
-            <div className="text-xs text-gray-500 mt-1">Vencidas</div>
+          <div className="bg-orange-50 dark:bg-orange-900/30 rounded-lg p-3 text-center col-span-2 sm:col-span-1">
+            <div className="text-2xl font-bold text-orange-600 dark:text-orange-400">{estadisticas.vencidas}</div>
+            <div className="text-xs text-gray-500 dark:text-gray-400 mt-1">Vencidas</div>
           </div>
         </div>
       </div>

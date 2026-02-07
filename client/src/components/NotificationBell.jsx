@@ -89,7 +89,7 @@ export default function NotificationBell() {
       {/* Bell Button */}
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="relative p-2 text-gray-600 hover:text-gray-800 hover:bg-gray-100 rounded-lg transition-colors"
+        className="relative p-2 text-gray-600 dark:text-gray-300 hover:text-gray-800 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-slate-700 rounded-lg transition-colors"
         aria-label="Notificaciones"
       >
         <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -106,14 +106,14 @@ export default function NotificationBell() {
 
       {/* Dropdown */}
       {isOpen && (
-        <div className="absolute right-0 mt-2 w-80 bg-white rounded-xl shadow-xl border border-gray-200 z-50 overflow-hidden">
+        <div className="absolute right-0 mt-2 w-80 bg-white dark:bg-slate-800 rounded-xl shadow-xl border border-gray-200 dark:border-slate-700 z-50 overflow-hidden">
           {/* Header */}
-          <div className="p-4 border-b border-gray-200 flex items-center justify-between">
-            <h3 className="font-semibold text-gray-800">Notificaciones</h3>
+          <div className="p-4 border-b border-gray-200 dark:border-slate-700 flex items-center justify-between">
+            <h3 className="font-semibold text-gray-800 dark:text-white">Notificaciones</h3>
             {unreadCount > 0 && (
               <button
                 onClick={handleMarkAllAsRead}
-                className="text-sm text-blue-600 hover:text-blue-700"
+                className="text-sm text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300"
               >
                 Marcar todas como leídas
               </button>
@@ -123,13 +123,13 @@ export default function NotificationBell() {
           {/* Notifications List */}
           <div className="max-h-80 overflow-y-auto">
             {loading ? (
-              <div className="p-8 text-center text-gray-500">
+              <div className="p-8 text-center text-gray-500 dark:text-gray-400">
                 <div className="animate-spin w-6 h-6 border-2 border-blue-500 border-t-transparent rounded-full mx-auto mb-2"></div>
                 Cargando...
               </div>
             ) : notifications.length === 0 ? (
-              <div className="p-8 text-center text-gray-500">
-                <svg className="w-12 h-12 mx-auto mb-2 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <div className="p-8 text-center text-gray-500 dark:text-gray-400">
+                <svg className="w-12 h-12 mx-auto mb-2 text-gray-300 dark:text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
                 </svg>
                 No hay notificaciones
@@ -140,17 +140,20 @@ export default function NotificationBell() {
                   key={notification.id}
                   onClick={() => !notification.leida && handleMarkAsRead(notification.id)}
                   className={`
-                    p-4 border-b border-gray-100 cursor-pointer transition-colors
-                    ${notification.leida ? 'bg-white' : 'bg-blue-50 hover:bg-blue-100'}
+                    p-4 border-b border-gray-100 dark:border-slate-700 cursor-pointer transition-colors
+                    ${notification.leida 
+                      ? 'bg-white dark:bg-slate-800' 
+                      : 'bg-blue-50 dark:bg-blue-900/30 hover:bg-blue-100 dark:hover:bg-blue-900/40'
+                    }
                   `}
                 >
                   <div className="flex items-start gap-3">
                     <div className={`w-2 h-2 rounded-full mt-2 flex-shrink-0 ${getTypeStyles(notification.tipo)}`}></div>
                     <div className="flex-1 min-w-0">
-                      <p className={`text-sm ${notification.leida ? 'text-gray-600' : 'text-gray-800 font-medium'}`}>
+                      <p className={`text-sm ${notification.leida ? 'text-gray-600 dark:text-gray-400' : 'text-gray-800 dark:text-white font-medium'}`}>
                         {notification.mensaje}
                       </p>
-                      <p className="text-xs text-gray-400 mt-1">
+                      <p className="text-xs text-gray-400 dark:text-gray-500 mt-1">
                         {formatTimeAgo(notification.fechaCreacion)}
                       </p>
                     </div>
@@ -165,8 +168,8 @@ export default function NotificationBell() {
 
           {/* Footer */}
           {notifications.length > 0 && (
-            <div className="p-3 border-t border-gray-200 bg-gray-50 text-center">
-              <button className="text-sm text-blue-600 hover:text-blue-700 font-medium">
+            <div className="p-3 border-t border-gray-200 dark:border-slate-700 bg-gray-50 dark:bg-slate-900 text-center">
+              <button className="text-sm text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 font-medium">
                 Ver todas las notificaciones
               </button>
             </div>

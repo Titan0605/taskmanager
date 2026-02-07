@@ -25,7 +25,7 @@ export default function TabNavigation({ tabs, activeTab, onTabChange }) {
             key={tab.id}
             onClick={() => handleTabClick(tab.id)}
             className={`tab-button rounded-t-lg ${
-              activeTab === tab.id ? 'active' : 'text-gray-600'
+              activeTab === tab.id ? 'active' : 'text-gray-600 dark:text-gray-400'
             }`}
           >
             {tab.label}
@@ -38,7 +38,7 @@ export default function TabNavigation({ tabs, activeTab, onTabChange }) {
         {/* Mobile Menu Button */}
         <button
           onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-          className="flex items-center justify-between w-full py-3 px-2 text-gray-700"
+          className="flex items-center justify-between w-full py-3 px-2 text-gray-700 dark:text-gray-200"
         >
           <span className="flex items-center gap-2">
             <span className="font-medium">{currentTabLabel}</span>
@@ -58,7 +58,7 @@ export default function TabNavigation({ tabs, activeTab, onTabChange }) {
           overflow-hidden transition-all duration-300 ease-in-out
           ${isMobileMenuOpen ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'}
         `}>
-          <div className="py-2 border-t border-gray-200">
+          <div className="py-2 border-t border-gray-200 dark:border-slate-600">
             {tabs.map((tab) => (
               <button
                 key={tab.id}
@@ -67,8 +67,8 @@ export default function TabNavigation({ tabs, activeTab, onTabChange }) {
                   w-full text-left px-4 py-3 text-sm font-medium
                   transition-colors duration-150
                   ${activeTab === tab.id 
-                    ? 'bg-blue-50 text-blue-600 border-l-4 border-blue-600' 
-                    : 'text-gray-600 hover:bg-gray-50 border-l-4 border-transparent'
+                    ? 'bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 border-l-4 border-blue-600' 
+                    : 'text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-slate-700 border-l-4 border-transparent'
                   }
                 `}
               >

@@ -60,7 +60,7 @@ export default function DashboardStats() {
     return (
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
         {[1, 2, 3, 4].map((i) => (
-          <div key={i} className="h-32 bg-gray-100 rounded-2xl animate-pulse"></div>
+          <div key={i} className="h-32 bg-gray-100 dark:bg-slate-700 rounded-2xl animate-pulse"></div>
         ))}
       </div>
     );
@@ -102,30 +102,30 @@ export default function DashboardStats() {
 
       {/* Secondary Stats */}
       <div className="grid grid-cols-3 md:grid-cols-6 gap-3">
-        <div className="bg-white rounded-xl p-4 border border-gray-200 text-center">
-          <div className="text-2xl font-bold text-yellow-600">{stats.pendientes}</div>
-          <div className="text-xs text-gray-500">Pendientes</div>
+        <div className="bg-white dark:bg-slate-800 rounded-xl p-4 border border-gray-200 dark:border-slate-700 text-center">
+          <div className="text-2xl font-bold text-yellow-600 dark:text-yellow-400">{stats.pendientes}</div>
+          <div className="text-xs text-gray-500 dark:text-gray-400">Pendientes</div>
         </div>
-        <div className="bg-white rounded-xl p-4 border border-gray-200 text-center">
-          <div className="text-2xl font-bold text-blue-600">{stats.enProgreso}</div>
-          <div className="text-xs text-gray-500">En Progreso</div>
+        <div className="bg-white dark:bg-slate-800 rounded-xl p-4 border border-gray-200 dark:border-slate-700 text-center">
+          <div className="text-2xl font-bold text-blue-600 dark:text-blue-400">{stats.enProgreso}</div>
+          <div className="text-xs text-gray-500 dark:text-gray-400">En Progreso</div>
         </div>
-        <div className="bg-white rounded-xl p-4 border border-gray-200 text-center">
-          <div className="text-2xl font-bold text-green-600">{stats.completadas}</div>
-          <div className="text-xs text-gray-500">Completadas</div>
+        <div className="bg-white dark:bg-slate-800 rounded-xl p-4 border border-gray-200 dark:border-slate-700 text-center">
+          <div className="text-2xl font-bold text-green-600 dark:text-green-400">{stats.completadas}</div>
+          <div className="text-xs text-gray-500 dark:text-gray-400">Completadas</div>
         </div>
-        <div className="bg-white rounded-xl p-4 border border-gray-200 text-center col-span-3 md:col-span-1">
-          <div className="text-2xl font-bold text-orange-600">{stats.vencidas}</div>
-          <div className="text-xs text-gray-500">Vencidas</div>
+        <div className="bg-white dark:bg-slate-800 rounded-xl p-4 border border-gray-200 dark:border-slate-700 text-center col-span-3 md:col-span-1">
+          <div className="text-2xl font-bold text-orange-600 dark:text-orange-400">{stats.vencidas}</div>
+          <div className="text-xs text-gray-500 dark:text-gray-400">Vencidas</div>
         </div>
         
         {/* Progress Bar - Full width on mobile, spans 2 on desktop */}
-        <div className="col-span-3 md:col-span-2 bg-white rounded-xl p-4 border border-gray-200">
+        <div className="col-span-3 md:col-span-2 bg-white dark:bg-slate-800 rounded-xl p-4 border border-gray-200 dark:border-slate-700">
           <div className="flex items-center justify-between mb-2">
-            <span className="text-xs text-gray-500">Progreso General</span>
-            <span className="text-sm font-bold text-green-600">{stats.completionRate}%</span>
+            <span className="text-xs text-gray-500 dark:text-gray-400">Progreso General</span>
+            <span className="text-sm font-bold text-green-600 dark:text-green-400">{stats.completionRate}%</span>
           </div>
-          <div className="h-3 bg-gray-200 rounded-full overflow-hidden">
+          <div className="h-3 bg-gray-200 dark:bg-slate-600 rounded-full overflow-hidden">
             <div 
               className="h-full bg-gradient-to-r from-green-400 to-green-600 rounded-full transition-all duration-500"
               style={{ width: `${stats.completionRate}%` }}

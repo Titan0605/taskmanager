@@ -14,46 +14,46 @@ export default function StatCard({
 }) {
   const colorClasses = {
     blue: {
-      bg: 'bg-blue-50',
-      iconBg: 'bg-blue-100',
+      bg: 'bg-blue-50 dark:bg-blue-900/30',
+      iconBg: 'bg-blue-100 dark:bg-blue-900/50',
       iconText: 'text-blue-600',
-      value: 'text-blue-700',
-      ring: 'ring-blue-200'
+      value: 'text-blue-700 dark:text-blue-400',
+      ring: 'ring-blue-200 dark:ring-blue-700'
     },
     green: {
-      bg: 'bg-green-50',
-      iconBg: 'bg-green-100',
+      bg: 'bg-green-50 dark:bg-green-900/30',
+      iconBg: 'bg-green-100 dark:bg-green-900/50',
       iconText: 'text-green-600',
-      value: 'text-green-700',
-      ring: 'ring-green-200'
+      value: 'text-green-700 dark:text-green-400',
+      ring: 'ring-green-200 dark:ring-green-700'
     },
     red: {
-      bg: 'bg-red-50',
-      iconBg: 'bg-red-100',
+      bg: 'bg-red-50 dark:bg-red-900/30',
+      iconBg: 'bg-red-100 dark:bg-red-900/50',
       iconText: 'text-red-600',
-      value: 'text-red-700',
-      ring: 'ring-red-200'
+      value: 'text-red-700 dark:text-red-400',
+      ring: 'ring-red-200 dark:ring-red-700'
     },
     orange: {
-      bg: 'bg-orange-50',
-      iconBg: 'bg-orange-100',
+      bg: 'bg-orange-50 dark:bg-orange-900/30',
+      iconBg: 'bg-orange-100 dark:bg-orange-900/50',
       iconText: 'text-orange-600',
-      value: 'text-orange-700',
-      ring: 'ring-orange-200'
+      value: 'text-orange-700 dark:text-orange-400',
+      ring: 'ring-orange-200 dark:ring-orange-700'
     },
     purple: {
-      bg: 'bg-purple-50',
-      iconBg: 'bg-purple-100',
+      bg: 'bg-purple-50 dark:bg-purple-900/30',
+      iconBg: 'bg-purple-100 dark:bg-purple-900/50',
       iconText: 'text-purple-600',
-      value: 'text-purple-700',
-      ring: 'ring-purple-200'
+      value: 'text-purple-700 dark:text-purple-400',
+      ring: 'ring-purple-200 dark:ring-purple-700'
     },
     gray: {
-      bg: 'bg-gray-50',
-      iconBg: 'bg-gray-100',
+      bg: 'bg-gray-50 dark:bg-gray-800',
+      iconBg: 'bg-gray-100 dark:bg-gray-700',
       iconText: 'text-gray-600',
-      value: 'text-gray-700',
-      ring: 'ring-gray-200'
+      value: 'text-gray-700 dark:text-gray-300',
+      ring: 'ring-gray-200 dark:ring-gray-600'
     }
   };
 
@@ -62,7 +62,7 @@ export default function StatCard({
   return (
     <div className={`
       relative overflow-hidden rounded-2xl p-5 
-      bg-white border border-gray-200 shadow-sm
+      bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 shadow-sm
       hover:shadow-md transition-all duration-300
       hover:ring-2 ${colors.ring}
     `}>
@@ -72,7 +72,7 @@ export default function StatCard({
       <div className="relative flex items-start justify-between">
         <div className="flex-1">
           {/* Label */}
-          <p className="text-sm font-medium text-gray-500 mb-1">{label}</p>
+          <p className="text-sm font-medium text-gray-500 dark:text-gray-400 mb-1">{label}</p>
           
           {/* Value */}
           <p className={`text-3xl font-bold ${colors.value} mb-1`}>
@@ -81,13 +81,13 @@ export default function StatCard({
           
           {/* Sublabel or Trend */}
           {sublabel && (
-            <p className="text-xs text-gray-400">{sublabel}</p>
+            <p className="text-xs text-gray-400 dark:text-gray-500">{sublabel}</p>
           )}
           
           {trend && (
             <div className={`flex items-center gap-1 text-xs ${
-              trend === 'up' ? 'text-green-600' : 
-              trend === 'down' ? 'text-red-600' : 'text-gray-500'
+              trend === 'up' ? 'text-green-600 dark:text-green-400' : 
+              trend === 'down' ? 'text-red-600 dark:text-red-400' : 'text-gray-500'
             }`}>
               {trend === 'up' && (
                 <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
