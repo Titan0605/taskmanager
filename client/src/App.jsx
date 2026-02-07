@@ -3,6 +3,7 @@ import './index.css'
 import Login from './pages/Login'
 import Dashboard from './pages/Dashboard'
 import { ThemeProvider } from './context/ThemeContext'
+import { ToastProvider } from './context/ToastContext'
 
 /**
  * Main App Component
@@ -28,14 +29,15 @@ function App() {
   // Render Login or Dashboard based on auth state
   return (
     <ThemeProvider>
-      {!isLoggedIn ? (
-        <Login onLogin={handleLogin} />
-      ) : (
-        <Dashboard user={user} onLogout={handleLogout} />
-      )}
+      <ToastProvider>
+        {!isLoggedIn ? (
+          <Login onLogin={handleLogin} />
+        ) : (
+          <Dashboard user={user} onLogout={handleLogout} />
+        )}
+      </ToastProvider>
     </ThemeProvider>
   )
 }
 
 export default App
-

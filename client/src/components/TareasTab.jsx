@@ -3,12 +3,14 @@ import { tareasApi, projectsApi } from '../services/api';
 import TaskCard from './TaskCard';
 import TaskDetailModal from './TaskDetailModal';
 import { exportTareasToCSV } from '../utils/exportUtils';
+import { useToast } from '../context/ToastContext';
 
 /**
  * Tareas Tab Component - Matches legacy "Gestión de Tareas" view
  * Includes form, table, and statistics bar
  */
 export default function TareasTab() {
+  const toast = useToast();
   const [tareas, setTareas] = useState([]);
   const [projects, setProjects] = useState([]);
   const [estadisticas, setEstadisticas] = useState({
@@ -60,13 +62,17 @@ export default function TareasTab() {
     try {
       if (selectedId) {
         await tareasApi.update(selectedId, formData);
+        toast.success('Tarea actualizada correctamente');
       } else {
         await tareasApi.create(formData);
+        toast.success('Tarea creada correctamente');
       }
       clearForm();
       fetchData();
     } catch (err) {
-      setError('Error al guardar: ' + err.message);
+      const errorMsg = 'Error al guardar: ' + err.message;
+      setError(errorMsg);
+      toast.error(errorMsg);
     }
   };
 
@@ -88,10 +94,13 @@ export default function TareasTab() {
     if (!selectedId) return;
     try {
       await tareasApi.delete(selectedId);
+      toast.success('Tarea eliminada correctamente');
       clearForm();
       fetchData();
     } catch (err) {
-      setError('Error al eliminar: ' + err.message);
+      const errorMsg = 'Error al eliminar: ' + err.message;
+      setError(errorMsg);
+      toast.error(errorMsg);
     }
   };
 
@@ -100,10 +109,13 @@ export default function TareasTab() {
     if (!confirm('¿Estás seguro de que deseas eliminar esta tarea?')) return;
     try {
       await tareasApi.delete(id);
+      toast.success('Tarea eliminada correctamente');
       if (selectedId === id) clearForm();
       fetchData();
     } catch (err) {
-      setError('Error al eliminar: ' + err.message);
+      const errorMsg = 'Error al eliminar: ' + err.message;
+      setError(errorMsg);
+      toast.error(errorMsg);
     }
   };
 

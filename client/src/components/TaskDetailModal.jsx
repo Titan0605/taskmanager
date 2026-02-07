@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { tareasApi } from '../services/api';
+import { useToast } from '../context/ToastContext';
 
 /**
  * Task Detail Modal - Shows task details with comments section
@@ -10,6 +11,7 @@ export default function TaskDetailModal({ tarea, onClose, onUpdate, currentUser 
   const [nuevoComentario, setNuevoComentario] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const toast = useToast();
 
   const handleAddComment = async (e) => {
     e.preventDefault();
@@ -22,9 +24,12 @@ export default function TaskDetailModal({ tarea, onClose, onUpdate, currentUser 
       const newComment = await tareasApi.addComment(tarea.id, nuevoComentario, currentUser);
       setComentarios([...comentarios, newComment]);
       setNuevoComentario('');
+      toast.success('Comentario agregado');
       if (onUpdate) onUpdate();
     } catch (err) {
-      setError('Error al agregar comentario: ' + err.message);
+      const errorMsg = 'Error al agregar comentario: ' + err.message;
+      setError(errorMsg);
+      toast.error(errorMsg);
     } finally {
       setLoading(false);
     }

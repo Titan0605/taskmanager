@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { authApi } from '../services/api';
+import { useToast } from '../context/ToastContext';
 
 /**
  * Login Page - Replica of legacy Task Manager login
@@ -9,6 +10,7 @@ export default function Login({ onLogin }) {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+  const toast = useToast();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -18,12 +20,17 @@ export default function Login({ onLogin }) {
     try {
       const response = await authApi.login(username, password);
       if (response.success) {
+        toast.success(`¡Bienvenido, ${response.username}!`);
         onLogin(response);
       } else {
-        setError(response.message || 'Error al iniciar sesión');
+        const errorMsg = response.message || 'Error al iniciar sesión';
+        setError(errorMsg);
+        toast.error(errorMsg);
       }
     } catch (err) {
-      setError(err.message || 'Error de conexión con el servidor');
+      const errorMsg = err.message || 'Error de conexión con el servidor';
+      setError(errorMsg);
+      toast.error(errorMsg);
     } finally {
       setLoading(false);
     }

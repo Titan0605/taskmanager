@@ -1,11 +1,13 @@
 import { useState, useEffect } from 'react';
 import { projectsApi } from '../services/api';
+import { useToast } from '../context/ToastContext';
 
 /**
  * Projects Tab Component - Functional CRUD for projects
  * Matches legacy "Gestión de Proyectos" view
  */
 export default function ProjectsTab() {
+  const toast = useToast();
   const [projects, setProjects] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
@@ -34,13 +36,17 @@ export default function ProjectsTab() {
     try {
       if (selectedId) {
         await projectsApi.update(selectedId, formData);
+        toast.success('Proyecto actualizado correctamente');
       } else {
         await projectsApi.create(formData);
+        toast.success('Proyecto creado correctamente');
       }
       clearForm();
       fetchProjects();
     } catch (err) {
-      setError('Error al guardar: ' + err.message);
+      const errorMsg = 'Error al guardar: ' + err.message;
+      setError(errorMsg);
+      toast.error(errorMsg);
     }
   };
 
@@ -53,10 +59,13 @@ export default function ProjectsTab() {
     if (!selectedId) return;
     try {
       await projectsApi.delete(selectedId);
+      toast.success('Proyecto eliminado correctamente');
       clearForm();
       fetchProjects();
     } catch (err) {
-      setError('Error al eliminar: ' + err.message);
+      const errorMsg = 'Error al eliminar: ' + err.message;
+      setError(errorMsg);
+      toast.error(errorMsg);
     }
   };
 
