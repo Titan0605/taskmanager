@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { tareasApi, projectsApi } from '../services/api';
 import StatCard from './StatCard';
+import LoadingSkeleton from './LoadingSkeleton';
 
 /**
  * DashboardStats Component - Executive KPI widgets
@@ -58,10 +59,8 @@ export default function DashboardStats() {
 
   if (loading) {
     return (
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-        {[1, 2, 3, 4].map((i) => (
-          <div key={i} className="h-32 bg-gray-100 dark:bg-slate-700 rounded-2xl animate-pulse"></div>
-        ))}
+      <div className="space-y-4">
+        <LoadingSkeleton type="card" count={4} />
       </div>
     );
   }

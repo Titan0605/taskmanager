@@ -4,6 +4,8 @@ import TaskCard from './TaskCard';
 import TaskDetailModal from './TaskDetailModal';
 import { exportTareasToCSV } from '../utils/exportUtils';
 import { useToast } from '../context/ToastContext';
+import LoadingSkeleton from './LoadingSkeleton';
+import EmptyState from './EmptyState';
 
 /**
  * Tareas Tab Component - Matches legacy "Gestión de Tareas" view
@@ -329,32 +331,29 @@ export default function TareasTab() {
         </div>
 
         {loading ? (
-          <div className="p-12 text-center text-gray-500 dark:text-gray-400 bg-white dark:bg-slate-800 rounded-xl border border-gray-200 dark:border-slate-700">
-            <div className="animate-spin w-8 h-8 border-4 border-blue-500 border-t-transparent rounded-full mx-auto mb-4"></div>
-            Cargando tareas...
-          </div>
+          <LoadingSkeleton type="card" count={6} />
         ) : tareas.length === 0 ? (
-          <div className="p-12 text-center text-gray-500 dark:text-gray-400 bg-white dark:bg-slate-800 rounded-xl border border-gray-200 dark:border-slate-700">
-            <svg className="w-16 h-16 mx-auto mb-4 text-gray-300 dark:text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
-            </svg>
-            <p className="text-lg font-medium dark:text-gray-300">No hay tareas registradas</p>
-            <p className="text-sm mt-1">Crea una nueva tarea usando el formulario de arriba</p>
-          </div>
+          <EmptyState 
+            title="No hay tareas registradas"
+            message="Crea una nueva tarea usando el formulario de arriba para comenzar a organizarte."
+            icon={
+              <svg className="w-12 h-12 text-gray-400 dark:text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+              </svg>
+            }
+          />
         ) : filteredTareas.length === 0 ? (
-          <div className="p-12 text-center text-gray-500 dark:text-gray-400 bg-white dark:bg-slate-800 rounded-xl border border-gray-200 dark:border-slate-700">
-            <svg className="w-16 h-16 mx-auto mb-4 text-gray-300 dark:text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-            </svg>
-            <p className="text-lg font-medium dark:text-gray-300">No se encontraron resultados</p>
-            <p className="text-sm mt-1">Intenta con otros términos de búsqueda</p>
-            <button
-              onClick={() => setSearchQuery('')}
-              className="mt-3 text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 text-sm font-medium"
-            >
-              Limpiar búsqueda
-            </button>
-          </div>
+          <EmptyState 
+            title="No se encontraron resultados"
+            message={`No hay tareas que coincidan con "${searchQuery}". Intenta con otros términos.`}
+            actionLabel="Limpiar búsqueda"
+            onAction={() => setSearchQuery('')}
+            icon={
+              <svg className="w-12 h-12 text-gray-400 dark:text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+              </svg>
+            }
+          />
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {filteredTareas.map((tarea) => (

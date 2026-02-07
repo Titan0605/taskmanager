@@ -1,6 +1,6 @@
-import { useState } from 'react';
 import { tareasApi } from '../services/api';
 import { useToast } from '../context/ToastContext';
+import EmptyState from './EmptyState';
 
 /**
  * Task Detail Modal - Shows task details with comments section
@@ -129,9 +129,17 @@ export default function TaskDetailModal({ tarea, onClose, onUpdate, currentUser 
             {/* Comments List */}
             <div className="space-y-3 mb-4 max-h-48 overflow-y-auto">
               {comentarios.length === 0 ? (
-                <p className="text-gray-400 text-sm text-center py-4">
-                  No hay comentarios aún. ¡Sé el primero en comentar!
-                </p>
+                <div className="py-8">
+                  <EmptyState 
+                    title="Sin comentarios"
+                    message="Sé el primero en comentar."
+                    icon={
+                      <svg className="w-8 h-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+                      </svg>
+                    }
+                  />
+                </div>
               ) : (
                 comentarios.map((comentario, index) => (
                   <div key={comentario.id || index} className="bg-gray-50 rounded-lg p-3">

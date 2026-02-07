@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react';
 import { projectsApi } from '../services/api';
 import { useToast } from '../context/ToastContext';
+import LoadingSkeleton from './LoadingSkeleton';
+import EmptyState from './EmptyState';
 
 /**
  * Projects Tab Component - Functional CRUD for projects
@@ -133,7 +135,21 @@ export default function ProjectsTab() {
       {/* Projects Table */}
       <div className="card overflow-hidden p-0">
         {loading ? (
-          <div className="p-8 text-center text-gray-500 dark:text-gray-400">Cargando proyectos...</div>
+          <div className="p-4">
+            <LoadingSkeleton type="table" count={5} />
+          </div>
+        ) : projects.length === 0 ? (
+          <div className="p-8">
+            <EmptyState 
+              title="No hay proyectos registrados"
+              message="Registra un nuevo proyecto usando el formulario de arriba."
+              icon={
+                <svg className="w-12 h-12 text-gray-400 dark:text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z" />
+                </svg>
+              }
+            />
+          </div>
         ) : (
           <table className="data-table">
             <thead>
@@ -144,27 +160,19 @@ export default function ProjectsTab() {
               </tr>
             </thead>
             <tbody>
-              {projects.length === 0 ? (
-                <tr>
-                  <td colSpan={3} className="text-center text-gray-500 dark:text-gray-400 py-8">
-                    No hay proyectos registrados
-                  </td>
+              {projects.map((project, index) => (
+                <tr
+                  key={project.id}
+                  onClick={() => handleEdit(project)}
+                  className={`cursor-pointer ${
+                    selectedId === project.id ? 'bg-blue-50 dark:bg-blue-900/30' : ''
+                  }`}
+                >
+                  <td className="font-mono text-gray-500 dark:text-gray-400">{index + 1}</td>
+                  <td className="font-medium dark:text-white">{project.nombre}</td>
+                  <td className="text-gray-600 dark:text-gray-400">{project.descripcion}</td>
                 </tr>
-              ) : (
-                projects.map((project, index) => (
-                  <tr
-                    key={project.id}
-                    onClick={() => handleEdit(project)}
-                    className={`cursor-pointer ${
-                      selectedId === project.id ? 'bg-blue-50 dark:bg-blue-900/30' : ''
-                    }`}
-                  >
-                    <td className="font-mono text-gray-500 dark:text-gray-400">{index + 1}</td>
-                    <td className="font-medium dark:text-white">{project.nombre}</td>
-                    <td className="text-gray-600 dark:text-gray-400">{project.descripcion}</td>
-                  </tr>
-                ))
-              )}
+              ))}
             </tbody>
           </table>
         )}
