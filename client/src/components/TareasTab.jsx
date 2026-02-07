@@ -6,6 +6,7 @@ import { exportTareasToCSV } from '../utils/exportUtils';
 import { useToast } from '../context/ToastContext';
 import LoadingSkeleton from './LoadingSkeleton';
 import EmptyState from './EmptyState';
+import TaskFormModal from './TaskFormModal';
 
 /**
  * Tareas Tab Component - Matches legacy "Gestión de Tareas" view
@@ -27,16 +28,10 @@ export default function TareasTab() {
   const [selectedId, setSelectedId] = useState(null);
   const [searchQuery, setSearchQuery] = useState('');
   const [detailTask, setDetailTask] = useState(null);
-  const [formData, setFormData] = useState({
-    titulo: '',
-    descripcion: '',
-    estado: 'Pendiente',
-    prioridad: 'Media',
-    proyectoId: '',
-    asignadoA: 'Sin asignar',
-    fechaVencimiento: '',
-    horasEstimadas: 0,
-  });
+  
+  // Modal State
+  const [isFormOpen, setIsFormOpen] = useState(false);
+  const [editingTask, setEditingTask] = useState(null);
 
   useEffect(() => {
     fetchData();
@@ -59,17 +54,16 @@ export default function TareasTab() {
     }
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const handleSave = async (data) => {
     try {
       if (selectedId) {
-        await tareasApi.update(selectedId, formData);
+        await tareasApi.update(selectedId, data);
         toast.success('Tarea actualizada correctamente');
       } else {
-        await tareasApi.create(formData);
+        await tareasApi.create(data);
         toast.success('Tarea creada correctamente');
       }
-      clearForm();
+      handleCloseForm();
       fetchData();
     } catch (err) {
       const errorMsg = 'Error al guardar: ' + err.message;
@@ -78,18 +72,16 @@ export default function TareasTab() {
     }
   };
 
+  const handleCreate = () => {
+    setSelectedId(null);
+    setEditingTask(null);
+    setIsFormOpen(true);
+  };
+
   const handleEdit = (tarea) => {
     setSelectedId(tarea.id);
-    setFormData({
-      titulo: tarea.titulo,
-      descripcion: tarea.descripcion,
-      estado: tarea.estado,
-      prioridad: tarea.prioridad,
-      proyectoId: tarea.proyectoId || '',
-      asignadoA: tarea.asignadoA,
-      fechaVencimiento: tarea.fechaVencimiento?.split('T')[0] || '',
-      horasEstimadas: tarea.horasEstimadas,
-    });
+    setEditingTask(tarea);
+    setIsFormOpen(true);
   };
 
   const handleDelete = async () => {
@@ -112,7 +104,9 @@ export default function TareasTab() {
     try {
       await tareasApi.delete(id);
       toast.success('Tarea eliminada correctamente');
-      if (selectedId === id) clearForm();
+      await tareasApi.delete(id);
+      toast.success('Tarea eliminada correctamente');
+      if (selectedId === id) handleCloseForm();
       fetchData();
     } catch (err) {
       const errorMsg = 'Error al eliminar: ' + err.message;
@@ -121,18 +115,10 @@ export default function TareasTab() {
     }
   };
 
-  const clearForm = () => {
+  const handleCloseForm = () => {
+    setIsFormOpen(false);
+    setEditingTask(null);
     setSelectedId(null);
-    setFormData({
-      titulo: '',
-      descripcion: '',
-      estado: 'Pendiente',
-      prioridad: 'Media',
-      proyectoId: '',
-      asignadoA: 'Sin asignar',
-      fechaVencimiento: '',
-      horasEstimadas: 0,
-    });
     setError('');
   };
 
@@ -150,141 +136,37 @@ export default function TareasTab() {
 
   return (
     <div className="space-y-6">
-      {/* Header with Export Button */}
+      {/* Header with Actions */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
         <h2 className="text-xl font-bold text-gray-800 dark:text-white">Gestión de Tareas</h2>
-        <button
-          onClick={() => exportTareasToCSV(tareas)}
-          disabled={tareas.length === 0}
-          className="inline-flex items-center gap-2 px-4 py-2 bg-green-600 text-white rounded-lg font-medium hover:bg-green-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors text-sm"
-        >
-          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-          </svg>
-          Exportar Reporte
-        </button>
+        <div className="flex gap-2">
+          <button
+            onClick={handleCreate}
+            className="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 transition-colors text-sm"
+          >
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+            </svg>
+            Nueva Tarea
+          </button>
+          <button
+            onClick={() => exportTareasToCSV(tareas)}
+            disabled={tareas.length === 0}
+            className="inline-flex items-center gap-2 px-4 py-2 bg-green-600 text-white rounded-lg font-medium hover:bg-green-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors text-sm"
+          >
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+            </svg>
+            Exportar
+          </button>
+        </div>
       </div>
 
-      {/* Form Card */}
-      <div className="card">
-        <h3 className="font-semibold text-gray-700 dark:text-gray-200 mb-4 pb-2 border-b dark:border-slate-600">
-          {selectedId ? 'Editar Tarea' : 'Nueva Tarea'}
-        </h3>
-
-        <form onSubmit={handleSubmit} className="space-y-3">
-          {/* Título */}
-          <div className="grid grid-cols-1 md:grid-cols-6 gap-2 items-center">
-            <label className="font-medium text-gray-700 dark:text-gray-300">Título:</label>
-            <input
-              type="text"
-              value={formData.titulo}
-              onChange={(e) => setFormData({ ...formData, titulo: e.target.value })}
-              className="form-input md:col-span-5"
-              required
-            />
-          </div>
-
-          {/* Descripción */}
-          <div className="grid grid-cols-1 md:grid-cols-6 gap-2 items-start">
-            <label className="font-medium text-gray-700 dark:text-gray-300 pt-2">Descripción:</label>
-            <textarea
-              value={formData.descripcion}
-              onChange={(e) => setFormData({ ...formData, descripcion: e.target.value })}
-              className="form-input md:col-span-5"
-              rows={2}
-            />
-          </div>
-
-          {/* Estado & Prioridad */}
-          <div className="grid grid-cols-1 md:grid-cols-6 gap-2 items-center">
-            <label className="font-medium text-gray-700 dark:text-gray-300">Estado:</label>
-            <select
-              value={formData.estado}
-              onChange={(e) => setFormData({ ...formData, estado: e.target.value })}
-              className="form-select md:col-span-2"
-            >
-              <option value="Pendiente">Pendiente</option>
-              <option value="En Progreso">En Progreso</option>
-              <option value="Completada">Completada</option>
-            </select>
-            <label className="font-medium text-gray-700 dark:text-gray-300">Prioridad:</label>
-            <select
-              value={formData.prioridad}
-              onChange={(e) => setFormData({ ...formData, prioridad: e.target.value })}
-              className="form-select md:col-span-2"
-            >
-              <option value="Baja">Baja</option>
-              <option value="Media">Media</option>
-              <option value="Alta">Alta</option>
-            </select>
-          </div>
-
-          {/* Proyecto & Asignado */}
-          <div className="grid grid-cols-1 md:grid-cols-6 gap-2 items-center">
-            <label className="font-medium text-gray-700 dark:text-gray-300">Proyecto:</label>
-            <select
-              value={formData.proyectoId}
-              onChange={(e) => setFormData({ ...formData, proyectoId: e.target.value })}
-              className="form-select md:col-span-2"
-            >
-              <option value="">Sin proyecto</option>
-              {projects.map((p) => (
-                <option key={p.id} value={p.id}>{p.nombre}</option>
-              ))}
-            </select>
-            <label className="font-medium text-gray-700 dark:text-gray-300">Asignado a:</label>
-            <input
-              type="text"
-              value={formData.asignadoA}
-              onChange={(e) => setFormData({ ...formData, asignadoA: e.target.value })}
-              className="form-input md:col-span-2"
-            />
-          </div>
-
-          {/* Fecha & Horas */}
-          <div className="grid grid-cols-1 md:grid-cols-6 gap-2 items-center">
-            <label className="font-medium text-gray-700 dark:text-gray-300">Vencimiento:</label>
-            <input
-              type="date"
-              value={formData.fechaVencimiento}
-              onChange={(e) => setFormData({ ...formData, fechaVencimiento: e.target.value })}
-              className="form-input md:col-span-2"
-            />
-            <label className="font-medium text-gray-700 dark:text-gray-300">Horas Est.:</label>
-            <input
-              type="number"
-              value={formData.horasEstimadas}
-              onChange={(e) => setFormData({ ...formData, horasEstimadas: parseFloat(e.target.value) || 0 })}
-              className="form-input md:col-span-2"
-              min="0"
-              step="0.5"
-            />
-          </div>
-
-          {/* Buttons */}
-          <div className="flex gap-2 pt-3">
-            <button type="submit" className="btn btn-primary">
-              {selectedId ? 'Actualizar' : 'Agregar'}
-            </button>
-            {selectedId && (
-              <>
-                <button type="button" onClick={handleDelete} className="btn btn-danger">
-                  Eliminar
-                </button>
-                <button type="button" onClick={clearForm} className="btn btn-secondary">
-                  Limpiar
-                </button>
-              </>
-            )}
-          </div>
-        </form>
-
-        {error && (
-          <div className="mt-4 p-3 bg-red-100 border border-red-300 text-red-700 rounded-lg">
-            {error}
-          </div>
-        )}
-      </div>
+      {error && (
+        <div className="p-3 bg-red-100 dark:bg-red-900/30 border border-red-300 dark:border-red-700 text-red-700 dark:text-red-400 rounded-lg">
+          {error}
+        </div>
+      )}
 
       {/* Search Bar */}
       <div className="bg-white dark:bg-slate-800 rounded-xl border border-gray-200 dark:border-slate-700 p-4 shadow-sm">
@@ -404,6 +286,17 @@ export default function TareasTab() {
           onClose={() => setDetailTask(null)}
           onUpdate={fetchData}
           currentUser="admin"
+        />
+      )}
+
+      {/* Task Form Modal */}
+      {isFormOpen && (
+        <TaskFormModal
+          tarea={editingTask}
+          projects={projects}
+          onClose={handleCloseForm}
+          onSave={handleSave}
+          loading={loading}
         />
       )}
     </div>

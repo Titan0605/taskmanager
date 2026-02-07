@@ -5,6 +5,8 @@ import ProjectsTab from '../components/ProjectsTab';
 import NotificationBell from '../components/NotificationBell';
 import DashboardStats from '../components/DashboardStats';
 import DarkModeToggle from '../components/DarkModeToggle';
+import NotificationsTab from '../components/NotificationsTab';
+import ReportsTab from '../components/ReportsTab';
 
 /**
  * Dashboard Page - Main application view with responsive navigation
@@ -32,14 +34,10 @@ export default function Dashboard({ user, onLogout }) {
         return <ProjectsTab />;
       case 'comentarios':
         return <PlaceholderTab title="Comentarios" icon="💬" />;
-      case 'historial':
-        return <PlaceholderTab title="Historial" icon="📜" />;
       case 'notificaciones':
-        return <PlaceholderTab title="Notificaciones" icon="🔔" />;
-      case 'busqueda':
-        return <PlaceholderTab title="Búsqueda" icon="🔍" />;
+        return <NotificationsTab />;
       case 'reportes':
-        return <PlaceholderTab title="Reportes" icon="📊" />;
+        return <ReportsTab />;
       default:
         return <TareasTab />;
     }
@@ -88,7 +86,7 @@ export default function Dashboard({ user, onLogout }) {
               <DarkModeToggle />
               
               {/* Notification Bell */}
-              <NotificationBell />
+              <NotificationBell onNavigate={setActiveTab} />
               
               {/* Mobile user badge */}
               <span className="sm:hidden text-xs bg-gray-100 dark:bg-slate-700 px-2 py-1 rounded-full text-gray-600 dark:text-gray-300">

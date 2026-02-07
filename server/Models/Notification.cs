@@ -10,7 +10,6 @@ namespace TaskManagerApi.Models;
 public class Notification
 {
     [BsonId]
-    [BsonRepresentation(BsonType.ObjectId)]
     public string Id { get; set; } = string.Empty;
 
     [BsonElement("mensaje")]

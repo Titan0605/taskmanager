@@ -4,7 +4,7 @@ import { notificationsApi } from '../services/api';
 /**
  * NotificationBell Component - Bell icon with badge and dropdown
  */
-export default function NotificationBell() {
+export default function NotificationBell({ onNavigate }) {
   const [notifications, setNotifications] = useState([]);
   const [unreadCount, setUnreadCount] = useState(0);
   const [isOpen, setIsOpen] = useState(false);
@@ -169,7 +169,13 @@ export default function NotificationBell() {
           {/* Footer */}
           {notifications.length > 0 && (
             <div className="p-3 border-t border-gray-200 dark:border-slate-700 bg-gray-50 dark:bg-slate-900 text-center">
-              <button className="text-sm text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 font-medium">
+              <button 
+                onClick={() => {
+                  setIsOpen(false);
+                  if (onNavigate) onNavigate('notificaciones');
+                }}
+                className="text-sm text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 font-medium"
+              >
                 Ver todas las notificaciones
               </button>
             </div>

@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { tareasApi } from '../services/api';
 import { useToast } from '../context/ToastContext';
 import EmptyState from './EmptyState';
@@ -49,11 +50,11 @@ export default function TaskDetailModal({ tarea, onClose, onUpdate, currentUser 
 
   return (
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-      <div className="bg-white rounded-2xl shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-hidden flex flex-col">
+      <div className="bg-white dark:bg-slate-800 rounded-2xl shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-hidden flex flex-col transition-colors duration-300">
         {/* Header */}
-        <div className="p-6 border-b border-gray-200 flex items-start justify-between gap-4">
+        <div className="p-6 border-b border-gray-200 dark:border-slate-700 flex items-start justify-between gap-4">
           <div className="flex-1 min-w-0">
-            <h2 className="text-xl font-bold text-gray-800 truncate">{tarea.titulo}</h2>
+            <h2 className="text-xl font-bold text-gray-800 dark:text-white truncate">{tarea.titulo}</h2>
             <div className="flex flex-wrap gap-2 mt-2">
               <span className={`px-2 py-1 rounded-full text-xs font-medium ${
                 tarea.estado === 'Completada' ? 'bg-green-100 text-green-700' :
@@ -73,9 +74,9 @@ export default function TaskDetailModal({ tarea, onClose, onUpdate, currentUser 
           </div>
           <button
             onClick={onClose}
-            className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+            className="p-2 hover:bg-gray-100 dark:hover:bg-slate-700 rounded-lg transition-colors"
           >
-            <svg className="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg className="w-5 h-5 text-gray-500 dark:text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
             </svg>
           </button>
@@ -86,8 +87,8 @@ export default function TaskDetailModal({ tarea, onClose, onUpdate, currentUser 
           {/* Description */}
           {tarea.descripcion && (
             <div>
-              <h3 className="text-sm font-semibold text-gray-700 mb-2">Descripción</h3>
-              <p className="text-gray-600 text-sm bg-gray-50 rounded-lg p-3">
+              <h3 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">Descripción</h3>
+              <p className="text-gray-600 dark:text-gray-400 text-sm bg-gray-50 dark:bg-slate-700/50 rounded-lg p-3">
                 {tarea.descripcion}
               </p>
             </div>
@@ -95,31 +96,31 @@ export default function TaskDetailModal({ tarea, onClose, onUpdate, currentUser 
 
           {/* Task Details */}
           <div className="grid grid-cols-2 gap-4 text-sm">
-            <div className="bg-gray-50 rounded-lg p-3">
-              <span className="text-gray-500">Asignado a</span>
-              <p className="font-medium text-gray-800">{tarea.asignadoA}</p>
+            <div className="bg-gray-50 dark:bg-slate-700/50 rounded-lg p-3">
+              <span className="text-gray-500 dark:text-gray-400">Asignado a</span>
+              <p className="font-medium text-gray-800 dark:text-white">{tarea.asignadoA}</p>
             </div>
-            <div className="bg-gray-50 rounded-lg p-3">
-              <span className="text-gray-500">Proyecto</span>
-              <p className="font-medium text-gray-800">{tarea.proyectoNombre || 'Sin proyecto'}</p>
+            <div className="bg-gray-50 dark:bg-slate-700/50 rounded-lg p-3">
+              <span className="text-gray-500 dark:text-gray-400">Proyecto</span>
+              <p className="font-medium text-gray-800 dark:text-white">{tarea.proyectoNombre || 'Sin proyecto'}</p>
             </div>
             {tarea.fechaVencimiento && (
-              <div className="bg-gray-50 rounded-lg p-3">
-                <span className="text-gray-500">Vencimiento</span>
-                <p className="font-medium text-gray-800">{tarea.fechaVencimiento.split('T')[0]}</p>
+              <div className="bg-gray-50 dark:bg-slate-700/50 rounded-lg p-3">
+                <span className="text-gray-500 dark:text-gray-400">Vencimiento</span>
+                <p className="font-medium text-gray-800 dark:text-white">{tarea.fechaVencimiento.split('T')[0]}</p>
               </div>
             )}
             {tarea.horasEstimadas > 0 && (
-              <div className="bg-gray-50 rounded-lg p-3">
-                <span className="text-gray-500">Horas estimadas</span>
-                <p className="font-medium text-gray-800">{tarea.horasEstimadas}h</p>
+              <div className="bg-gray-50 dark:bg-slate-700/50 rounded-lg p-3">
+                <span className="text-gray-500 dark:text-gray-400">Horas estimadas</span>
+                <p className="font-medium text-gray-800 dark:text-white">{tarea.horasEstimadas}h</p>
               </div>
             )}
           </div>
 
           {/* Comments Section */}
           <div>
-            <h3 className="text-sm font-semibold text-gray-700 mb-3 flex items-center gap-2">
+            <h3 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3 flex items-center gap-2">
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
               </svg>
@@ -142,19 +143,19 @@ export default function TaskDetailModal({ tarea, onClose, onUpdate, currentUser 
                 </div>
               ) : (
                 comentarios.map((comentario, index) => (
-                  <div key={comentario.id || index} className="bg-gray-50 rounded-lg p-3">
+                  <div key={comentario.id || index} className="bg-gray-50 dark:bg-slate-700/50 rounded-lg p-3">
                     <div className="flex items-center justify-between mb-1">
-                      <span className="font-medium text-gray-800 text-sm flex items-center gap-2">
+                      <span className="font-medium text-gray-800 dark:text-white text-sm flex items-center gap-2">
                         <span className="w-6 h-6 bg-blue-500 rounded-full flex items-center justify-center text-white text-xs">
                           {comentario.autor?.[0]?.toUpperCase() || 'U'}
                         </span>
                         {comentario.autor}
                       </span>
-                      <span className="text-xs text-gray-400">
+                      <span className="text-xs text-gray-400 dark:text-gray-500">
                         {formatDate(comentario.fechaCreacion)}
                       </span>
                     </div>
-                    <p className="text-gray-600 text-sm ml-8">{comentario.texto}</p>
+                    <p className="text-gray-600 dark:text-gray-300 text-sm ml-8">{comentario.texto}</p>
                   </div>
                 ))
               )}
@@ -167,7 +168,7 @@ export default function TaskDetailModal({ tarea, onClose, onUpdate, currentUser 
                 value={nuevoComentario}
                 onChange={(e) => setNuevoComentario(e.target.value)}
                 placeholder="Escribe un comentario..."
-                className="flex-1 px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 focus:outline-none"
+                className="flex-1 px-3 py-2 border border-gray-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-gray-900 dark:text-white rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 focus:outline-none placeholder-gray-400 dark:placeholder-gray-400"
                 disabled={loading}
               />
               <button
@@ -187,7 +188,7 @@ export default function TaskDetailModal({ tarea, onClose, onUpdate, currentUser 
           {/* Activity Log Section */}
           {tarea.historial && tarea.historial.length > 0 && (
             <div>
-              <h3 className="text-sm font-semibold text-gray-700 mb-3 flex items-center gap-2">
+              <h3 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3 flex items-center gap-2">
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
@@ -197,10 +198,10 @@ export default function TaskDetailModal({ tarea, onClose, onUpdate, currentUser 
                 {[...tarea.historial].reverse().map((entry, index) => (
                   <div 
                     key={index} 
-                    className="flex items-start gap-3 text-sm border-l-2 border-gray-200 pl-3 py-1"
+                    className="flex items-start gap-3 text-sm border-l-2 border-gray-200 dark:border-slate-700 pl-3 py-1"
                   >
-                    <div className="w-2 h-2 bg-gray-400 rounded-full mt-1.5 flex-shrink-0"></div>
-                    <span className="text-gray-600">{entry}</span>
+                    <div className="w-2 h-2 bg-gray-400 dark:bg-gray-500 rounded-full mt-1.5 flex-shrink-0"></div>
+                    <span className="text-gray-600 dark:text-gray-400">{entry}</span>
                   </div>
                 ))}
               </div>
@@ -209,10 +210,10 @@ export default function TaskDetailModal({ tarea, onClose, onUpdate, currentUser 
         </div>
 
         {/* Footer */}
-        <div className="p-4 border-t border-gray-200 bg-gray-50">
+        <div className="p-4 border-t border-gray-200 dark:border-slate-700 bg-gray-50 dark:bg-slate-900/50">
           <button
             onClick={onClose}
-            className="w-full py-2 bg-gray-200 text-gray-700 rounded-lg font-medium hover:bg-gray-300 transition-colors"
+            className="w-full py-2 bg-gray-200 dark:bg-slate-700 text-gray-700 dark:text-gray-200 rounded-lg font-medium hover:bg-gray-300 dark:hover:bg-slate-600 transition-colors"
           >
             Cerrar
           </button>
