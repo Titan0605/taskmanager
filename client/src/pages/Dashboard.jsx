@@ -7,6 +7,7 @@ import DashboardStats from '../components/DashboardStats';
 import DarkModeToggle from '../components/DarkModeToggle';
 import NotificationsTab from '../components/NotificationsTab';
 import ReportsTab from '../components/ReportsTab';
+import SearchTab from '../components/SearchTab';
 
 /**
  * Dashboard Page - Main application view with responsive navigation
@@ -34,6 +35,8 @@ export default function Dashboard({ user, onLogout }) {
         return <ProjectsTab />;
       case 'comentarios':
         return <PlaceholderTab title="Comentarios" icon="💬" />;
+      case 'busqueda':
+        return <SearchTab />;
       case 'notificaciones':
         return <NotificationsTab />;
       case 'reportes':

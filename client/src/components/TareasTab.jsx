@@ -12,6 +12,8 @@ import TaskFormModal from './TaskFormModal';
  * Tareas Tab Component - Matches legacy "Gestión de Tareas" view
  * Includes form, table, and statistics bar
  */
+import ConfirmationModal from './ConfirmationModal';
+
 export default function TareasTab() {
   const toast = useToast();
   const [tareas, setTareas] = useState([]);
@@ -33,6 +35,11 @@ export default function TareasTab() {
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [editingTask, setEditingTask] = useState(null);
 
+  // Delete Modal State
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [taskToDelete, setTaskToDelete] = useState(null);
+  const [operationLoading, setOperationLoading] = useState(false);
+  
   useEffect(() => {
     fetchData();
   }, []);
@@ -84,34 +91,32 @@ export default function TareasTab() {
     setIsFormOpen(true);
   };
 
-  const handleDelete = async () => {
-    if (!selectedId) return;
-    try {
-      await tareasApi.delete(selectedId);
-      toast.success('Tarea eliminada correctamente');
-      clearForm();
-      fetchData();
-    } catch (err) {
-      const errorMsg = 'Error al eliminar: ' + err.message;
-      setError(errorMsg);
-      toast.error(errorMsg);
-    }
+  // Triggered from TaskCard delete button
+  const handleDeleteClick = (id) => {
+    const task = tareas.find(t => t.id === id);
+    if (!task) return;
+    setTaskToDelete(task);
+    setIsDeleteModalOpen(true);
   };
 
-  // Direct delete from card (without needing to select first)
-  const handleDeleteDirect = async (id) => {
-    if (!confirm('¿Estás seguro de que deseas eliminar esta tarea?')) return;
+  const handleConfirmDelete = async () => {
+    if (!taskToDelete) return;
     try {
-      await tareasApi.delete(id);
+      setOperationLoading(true);
+      await tareasApi.delete(taskToDelete.id);
       toast.success('Tarea eliminada correctamente');
-      await tareasApi.delete(id);
-      toast.success('Tarea eliminada correctamente');
-      if (selectedId === id) handleCloseForm();
+      
+      if (selectedId === taskToDelete.id) handleCloseForm();
+      
+      setIsDeleteModalOpen(false);
+      setTaskToDelete(null);
       fetchData();
     } catch (err) {
       const errorMsg = 'Error al eliminar: ' + err.message;
       setError(errorMsg);
       toast.error(errorMsg);
+    } finally {
+      setOperationLoading(false);
     }
   };
 
@@ -244,7 +249,7 @@ export default function TareasTab() {
                 tarea={tarea}
                 isSelected={selectedId === tarea.id}
                 onEdit={handleEdit}
-                onDelete={handleDeleteDirect}
+                onDelete={handleDeleteClick}
                 onViewDetails={(t) => setDetailTask(t)}
               />
             ))}
@@ -299,6 +304,19 @@ export default function TareasTab() {
           loading={loading}
         />
       )}
+
+      {/* Delete Confirmation Modal */}
+      <ConfirmationModal
+        isOpen={isDeleteModalOpen}
+        onClose={() => setIsDeleteModalOpen(false)}
+        onConfirm={handleConfirmDelete}
+        title="Eliminar Tarea"
+        message={`¿Estás seguro de que deseas eliminar permanentemente la tarea "${taskToDelete?.titulo}"? Esta acción no se puede deshacer.`}
+        confirmText="Eliminar"
+        cancelText="Cancelar"
+        isDangerous={true}
+        loading={operationLoading}
+      />
     </div>
   );
 }
