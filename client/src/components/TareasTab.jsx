@@ -19,6 +19,7 @@ export default function TareasTab() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [selectedId, setSelectedId] = useState(null);
+  const [searchQuery, setSearchQuery] = useState('');
   const [formData, setFormData] = useState({
     titulo: '',
     descripcion: '',
@@ -117,6 +118,18 @@ export default function TareasTab() {
     });
     setError('');
   };
+
+  // Filter tasks based on search query (client-side for instant feedback)
+  const filteredTareas = tareas.filter((tarea) => {
+    if (!searchQuery.trim()) return true;
+    const query = searchQuery.toLowerCase();
+    return (
+      tarea.titulo?.toLowerCase().includes(query) ||
+      tarea.descripcion?.toLowerCase().includes(query) ||
+      tarea.asignadoA?.toLowerCase().includes(query) ||
+      tarea.proyectoNombre?.toLowerCase().includes(query)
+    );
+  });
 
   return (
     <div className="space-y-6">
@@ -243,6 +256,39 @@ export default function TareasTab() {
         )}
       </div>
 
+      {/* Search Bar */}
+      <div className="bg-white rounded-xl border border-gray-200 p-4 shadow-sm">
+        <div className="relative">
+          <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+            <svg className="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+            </svg>
+          </div>
+          <input
+            type="text"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            placeholder="Buscar tareas por título, descripción, asignado o proyecto..."
+            className="w-full pl-10 pr-10 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 focus:outline-none transition-all text-sm"
+          />
+          {searchQuery && (
+            <button
+              onClick={() => setSearchQuery('')}
+              className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-gray-600"
+            >
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+          )}
+        </div>
+        {searchQuery && (
+          <div className="mt-2 text-sm text-gray-500">
+            {filteredTareas.length} resultado{filteredTareas.length !== 1 ? 's' : ''} para "{searchQuery}"
+          </div>
+        )}
+      </div>
+
       {/* Tasks Card Grid */}
       <div className="space-y-4">
         <div className="flex items-center justify-between">
@@ -250,7 +296,7 @@ export default function TareasTab() {
             Lista de Tareas
           </h3>
           <span className="text-sm text-gray-500">
-            {tareas.length} tarea{tareas.length !== 1 ? 's' : ''}
+            {filteredTareas.length} tarea{filteredTareas.length !== 1 ? 's' : ''}
           </span>
         </div>
 
@@ -267,9 +313,23 @@ export default function TareasTab() {
             <p className="text-lg font-medium">No hay tareas registradas</p>
             <p className="text-sm mt-1">Crea una nueva tarea usando el formulario de arriba</p>
           </div>
+        ) : filteredTareas.length === 0 ? (
+          <div className="p-12 text-center text-gray-500 bg-white rounded-xl border border-gray-200">
+            <svg className="w-16 h-16 mx-auto mb-4 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+            </svg>
+            <p className="text-lg font-medium">No se encontraron resultados</p>
+            <p className="text-sm mt-1">Intenta con otros términos de búsqueda</p>
+            <button
+              onClick={() => setSearchQuery('')}
+              className="mt-3 text-blue-600 hover:text-blue-700 text-sm font-medium"
+            >
+              Limpiar búsqueda
+            </button>
+          </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {tareas.map((tarea) => (
+            {filteredTareas.map((tarea) => (
               <TaskCard
                 key={tarea.id}
                 tarea={tarea}
