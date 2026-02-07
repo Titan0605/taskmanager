@@ -46,7 +46,14 @@ public class TareasController : ControllerBase
                 ProyectoNombre = projectDict.TryGetValue(t.ProyectoId, out var nombre) ? nombre : "Sin proyecto",
                 AsignadoA = t.AsignadoA,
                 FechaVencimiento = t.FechaVencimiento,
-                HorasEstimadas = t.HorasEstimadas
+                HorasEstimadas = t.HorasEstimadas,
+                Comentarios = t.Comentarios.Select(c => new CommentDto
+                {
+                    Id = c.Id,
+                    Texto = c.Texto,
+                    Autor = c.Autor,
+                    FechaCreacion = c.FechaCreacion
+                }).ToList()
             }).ToList();
 
             // Calculate statistics matching legacy app
@@ -97,7 +104,14 @@ public class TareasController : ControllerBase
                 ProyectoId = tarea.ProyectoId,
                 AsignadoA = tarea.AsignadoA,
                 FechaVencimiento = tarea.FechaVencimiento,
-                HorasEstimadas = tarea.HorasEstimadas
+                HorasEstimadas = tarea.HorasEstimadas,
+                Comentarios = tarea.Comentarios.Select(c => new CommentDto
+                {
+                    Id = c.Id,
+                    Texto = c.Texto,
+                    Autor = c.Autor,
+                    FechaCreacion = c.FechaCreacion
+                }).ToList()
             });
         }
         catch (Exception ex)
@@ -199,6 +213,49 @@ public class TareasController : ControllerBase
         {
             _logger.LogError(ex, "Error deleting task {Id}", id);
             return StatusCode(500, new { Message = "Error al eliminar tarea" });
+        }
+    }
+
+    /// <summary>
+    /// POST api/tareas/{id}/comentarios - Add comment to task
+    /// </summary>
+    [HttpPost("{id}/comentarios")]
+    public async Task<ActionResult<CommentDto>> AddComment(string id, [FromBody] AddCommentRequest request)
+    {
+        try
+        {
+            var comment = new Comment
+            {
+                Texto = request.Texto,
+                Autor = request.Autor,
+                FechaCreacion = DateTime.UtcNow
+            };
+
+            var update = Builders<Tarea>.Update
+                .Push(t => t.Comentarios, comment)
+                .Set(t => t.UpdatedAt, DateTime.UtcNow);
+
+            var result = await _mongoService.Tareas.UpdateOneAsync(t => t.Id == id, update);
+
+            if (result.MatchedCount == 0)
+            {
+                return NotFound(new { Message = "Tarea no encontrada" });
+            }
+
+            _logger.LogInformation("Added comment to task {Id} by {Author}", id, request.Autor);
+
+            return Ok(new CommentDto
+            {
+                Id = comment.Id,
+                Texto = comment.Texto,
+                Autor = comment.Autor,
+                FechaCreacion = comment.FechaCreacion
+            });
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error adding comment to task {Id}", id);
+            return StatusCode(500, new { Message = "Error al agregar comentario" });
         }
     }
 }

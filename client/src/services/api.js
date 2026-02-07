@@ -100,6 +100,13 @@ export const tareasApi = {
   delete: async (id) => {
     return fetchApi(`/tareas/${id}`, { method: 'DELETE' });
   },
+
+  addComment: async (tareaId, texto, autor) => {
+    return fetchApi(`/tareas/${tareaId}/comentarios`, {
+      method: 'POST',
+      body: JSON.stringify({ texto, autor }),
+    });
+  },
 };
 
 export default { authApi, projectsApi, tareasApi };

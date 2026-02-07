@@ -1,6 +1,26 @@
 namespace TaskManagerApi.Views;
 
 /// <summary>
+/// Comment DTO - View layer for comments
+/// </summary>
+public class CommentDto
+{
+    public string? Id { get; set; }
+    public string Texto { get; set; } = string.Empty;
+    public string Autor { get; set; } = string.Empty;
+    public DateTime FechaCreacion { get; set; } = DateTime.UtcNow;
+}
+
+/// <summary>
+/// Request DTO for adding a comment
+/// </summary>
+public class AddCommentRequest
+{
+    public string Texto { get; set; } = string.Empty;
+    public string Autor { get; set; } = string.Empty;
+}
+
+/// <summary>
 /// Tarea DTO - View layer (V in MVC)
 /// Used for API requests and responses
 /// </summary>
@@ -16,6 +36,7 @@ public class TareaDto
     public string AsignadoA { get; set; } = "Sin asignar";
     public DateTime? FechaVencimiento { get; set; }
     public double HorasEstimadas { get; set; }
+    public List<CommentDto> Comentarios { get; set; } = new();
 }
 
 /// <summary>
@@ -38,3 +59,4 @@ public class TareaEstadisticas
     public int AltaPrioridad { get; set; }
     public int Vencidas { get; set; }
 }
+

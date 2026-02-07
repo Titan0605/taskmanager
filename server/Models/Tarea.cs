@@ -43,4 +43,7 @@ public class Tarea
 
     [BsonElement("updatedAt")]
     public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
+
+    [BsonElement("comentarios")]
+    public List<Comment> Comentarios { get; set; } = new();
 }

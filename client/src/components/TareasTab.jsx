@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { tareasApi, projectsApi } from '../services/api';
 import TaskCard from './TaskCard';
+import TaskDetailModal from './TaskDetailModal';
 
 /**
  * Tareas Tab Component - Matches legacy "Gestión de Tareas" view
@@ -20,6 +21,7 @@ export default function TareasTab() {
   const [error, setError] = useState('');
   const [selectedId, setSelectedId] = useState(null);
   const [searchQuery, setSearchQuery] = useState('');
+  const [detailTask, setDetailTask] = useState(null);
   const [formData, setFormData] = useState({
     titulo: '',
     descripcion: '',
@@ -336,6 +338,7 @@ export default function TareasTab() {
                 isSelected={selectedId === tarea.id}
                 onEdit={handleEdit}
                 onDelete={handleDeleteDirect}
+                onViewDetails={(t) => setDetailTask(t)}
               />
             ))}
           </div>
@@ -368,6 +371,16 @@ export default function TareasTab() {
           </div>
         </div>
       </div>
+
+      {/* Task Detail Modal */}
+      {detailTask && (
+        <TaskDetailModal
+          tarea={detailTask}
+          onClose={() => setDetailTask(null)}
+          onUpdate={fetchData}
+          currentUser="admin"
+        />
+      )}
     </div>
   );
 }

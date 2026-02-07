@@ -2,7 +2,7 @@
  * TaskCard Component - Modern card layout for tasks
  * Features: border, shadow, hover effects, edit/delete actions inside
  */
-export default function TaskCard({ tarea, isSelected, onEdit, onDelete }) {
+export default function TaskCard({ tarea, isSelected, onEdit, onDelete, onViewDetails }) {
   // Determine status styling
   const getStatusStyles = (estado) => {
     switch (estado) {
@@ -34,8 +34,9 @@ export default function TaskCard({ tarea, isSelected, onEdit, onDelete }) {
 
   return (
     <div
+      onClick={() => onViewDetails && onViewDetails(tarea)}
       className={`
-        group relative bg-white rounded-xl border-2 p-5
+        group relative bg-white rounded-xl border-2 p-5 cursor-pointer
         shadow-sm hover:shadow-lg transition-all duration-300
         hover:border-blue-300 hover:-translate-y-1
         ${isSelected ? 'border-blue-500 ring-2 ring-blue-200' : 'border-gray-200'}
@@ -109,7 +110,17 @@ export default function TaskCard({ tarea, isSelected, onEdit, onDelete }) {
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
             </svg>
-            <span>{tarea.horasEstimadas}h estimadas</span>
+          <span>{tarea.horasEstimadas}h estimadas</span>
+          </div>
+        )}
+
+        {/* Comments count */}
+        {tarea.comentarios?.length > 0 && (
+          <div className="flex items-center gap-2 text-blue-600">
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+            </svg>
+            <span>{tarea.comentarios.length} comentario{tarea.comentarios.length !== 1 ? 's' : ''}</span>
           </div>
         )}
       </div>
