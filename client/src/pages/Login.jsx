@@ -101,10 +101,7 @@ export default function Login({ onLogin }) {
             </button>
           </form>
 
-          {/* Demo Credentials Hint */}
-          <div className="mt-6 p-3 bg-blue-50 dark:bg-blue-900/30 rounded-lg text-sm text-blue-700 dark:text-blue-400">
-            <strong>Demo:</strong> Usuario: admin / Contraseña: admin
-          </div>
+
         </div>
 
         {/* Footer */}
