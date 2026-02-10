@@ -1,0 +1,26 @@
+# Git
+.git
+.gitignore
+
+# Node
+client/node_modules
+client/dist
+
+# .NET build artifacts
+server/bin
+server/obj
+
+# Environment files (secrets)
+server/.env
+client/.env
+
+# IDE
+.vs
+.vscode
+.idea
+*.swp
+*.user
+*.suo
+
+# Gemini artifacts
+.gemini

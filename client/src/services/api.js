@@ -3,7 +3,7 @@
  * This is the centralized API client for the Task Manager frontend
  */
 
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+const API_BASE_URL = import.meta.env.VITE_API_URL || '';
 
 /**
  * Generic fetch wrapper with error handling

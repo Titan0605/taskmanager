@@ -34,14 +34,22 @@ builder.Services.AddScoped<DbSeeder>();
 builder.Services.AddControllers();
 
 // ===== CORS - Allow React frontend =====
+var allowedOrigins = new List<string>
+{
+    "http://localhost:5173",  // Vite dev server
+    "http://localhost:3000"   // Alternative port
+};
+
+// Add production origin from environment variable if set
+var productionOrigin = Environment.GetEnvironmentVariable("ALLOWED_ORIGIN");
+if (!string.IsNullOrEmpty(productionOrigin))
+    allowedOrigins.Add(productionOrigin);
+
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowReactApp", policy =>
     {
-        policy.WithOrigins(
-                "http://localhost:5173",  // Vite dev server
-                "http://localhost:3000"   // Alternative port
-            )
+        policy.WithOrigins(allowedOrigins.ToArray())
             .AllowAnyHeader()
             .AllowAnyMethod()
             .AllowCredentials();
@@ -69,12 +77,20 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseCors("AllowReactApp");
+
+// Serve React frontend from wwwroot
+app.UseDefaultFiles();
+app.UseStaticFiles();
+
 app.UseAuthorization();
 app.MapControllers();
 
+// SPA Fallback: serve index.html for any non-API, non-file route
+app.MapFallbackToFile("index.html");
+
 // ===== START SERVER =====
 var port = Environment.GetEnvironmentVariable("PORT") ?? "5000";
-app.Urls.Add($"http://localhost:{port}");
+app.Urls.Add($"http://0.0.0.0:{port}");
 
 Console.WriteLine($"🚀 Task Manager API running on http://localhost:{port}");
 Console.WriteLine($"📚 Swagger UI: http://localhost:{port}/swagger");
